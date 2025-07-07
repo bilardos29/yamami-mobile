@@ -1,3 +1,4 @@
+import 'package:app/feature/login/view/login_page.dart';
 import 'package:app/feature/splash/view/splash_page.dart';
 import 'package:app/utils/theme.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +37,7 @@ class _MyAppState extends State<MyApp> {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      home: SplashPage(),
+      home: LoginPage(),
     );
   }
 }

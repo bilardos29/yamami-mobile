@@ -30,18 +30,18 @@ class MaterialTheme {
       errorContainer: Color(0xffFFE6E6),
       onErrorContainer: Color(0xffFFE6E6),
 
-      onSurface: Color(0xffF5F4F4),
-      onSurfaceVariant: Color(0xffE3E1E0),
+      onSurface: Color(0xff000000),
+      onSurfaceVariant: Color(0xff4A4337),
       outline: Color(0xff8C867D),
-      outlineVariant: Color(0xff4A4337),
-      shadow: Color(0xff271B09),
+      outlineVariant: Color(0xffE3E1E0),
+      shadow: Color(0xffF5F4F4),
 
       surfaceContainer: Color(0xffECECEC),
       surfaceContainerHigh: Color(0xffF1F1F1),
       surfaceContainerHighest: Color(0xffFFFFFF),
 
 
-      surface: Color(0xfff5fafb),
+      surface: Color(0xffffffff),
       scrim: Color(0xff000000),
       inverseSurface: Color(0xff2b3133),
       inversePrimary: Color(0xff86d1ea),
