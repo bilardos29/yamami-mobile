@@ -1,5 +1,4 @@
-import 'package:app/feature/forgot_password/view/forgot_password_page.dart';
-import 'package:app/feature/login/view/login_page.dart';
+import 'package:app/feature/reset_password/view/reset_password_page.dart';
 import 'package:app/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -37,7 +36,7 @@ class _MyAppState extends State<MyApp> {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      home: LoginPage(),
+      home: ResetPasswordPage(),
     );
   }
 }
