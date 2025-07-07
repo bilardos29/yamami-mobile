@@ -1,5 +1,5 @@
+import 'package:app/feature/forgot_password/view/forgot_password_page.dart';
 import 'package:app/feature/login/view/login_page.dart';
-import 'package:app/feature/splash/view/splash_page.dart';
 import 'package:app/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';

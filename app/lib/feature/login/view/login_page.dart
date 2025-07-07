@@ -1,6 +1,7 @@
 import 'package:app/component/custom_text_button.dart';
 import 'package:app/component/custom_text_field.dart';
 import 'package:app/component/main_button.dart';
+import 'package:app/feature/forgot_password/view/forgot_password_page.dart';
 import 'package:app/utils/asset_path.dart';
 import 'package:flutter/material.dart';
 
@@ -77,7 +78,14 @@ class _LoginPageState extends State<LoginPage> {
                       Text('Ingat Saya'),
                       CustomTextButton(
                         text: 'Lupa kata sandi?',
-                        onClick: () {},
+                        onClick: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ForgotPasswordPage(),
+                            ),
+                          );
+                        },
                       ),
                     ],
                   ),
