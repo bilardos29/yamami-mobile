@@ -1,3 +1,5 @@
+import 'package:app/feature/auth/login/view/login_page.dart';
+import 'package:app/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 class SplashPage extends StatefulWidget {
@@ -8,6 +10,13 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
+
+  @override
+  void initState() {
+    super.initState();
+    navigateWithDelay(context, const LoginPage(), seconds: 2);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(

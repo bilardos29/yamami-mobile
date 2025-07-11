@@ -1,5 +1,7 @@
 import 'package:app/component/custom_text_field.dart';
 import 'package:app/component/main_button.dart';
+import 'package:app/feature/auth/login/view/login_page.dart';
+import 'package:app/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
@@ -40,11 +42,15 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       ),
                     ),
                   ),
-
                   SizedBox(height: 24),
                   CustomTextField(label: 'Email', controller: _email),
                   SizedBox(height: 40),
-                  MainButton(text: 'Kirim', onPressed: () {}),
+                  MainButton(
+                    text: 'Kirim',
+                    onPressed: () {
+                      backToMainPage(context, LoginPage());
+                    },
+                  ),
                 ],
               ),
             ),

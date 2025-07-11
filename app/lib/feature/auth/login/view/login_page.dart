@@ -1,8 +1,11 @@
 import 'package:app/component/custom_text_button.dart';
 import 'package:app/component/custom_text_field.dart';
 import 'package:app/component/main_button.dart';
-import 'package:app/feature/forgot_password/view/forgot_password_page.dart';
+import 'package:app/feature/auth/forgot_password/view/forgot_password_page.dart';
+import 'package:app/feature/auth/register/view/register_page.dart';
+import 'package:app/feature/home/view/home_page.dart';
 import 'package:app/utils/asset_path.dart';
+import 'package:app/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
@@ -26,7 +29,9 @@ class _LoginPageState extends State<LoginPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text('Belum punya akun?'),
-            CustomTextButton(text: ' Daftar di sini', onClick: () {}),
+            CustomTextButton(text: ' Daftar di sini', onClick: () {
+              nextPage(context, RegisterPage());
+            }),
           ],
         ),
       ),
@@ -79,18 +84,15 @@ class _LoginPageState extends State<LoginPage> {
                       CustomTextButton(
                         text: 'Lupa kata sandi?',
                         onClick: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ForgotPasswordPage(),
-                            ),
-                          );
+                          nextPage(context, ForgotPasswordPage());
                         },
                       ),
                     ],
                   ),
                   SizedBox(height: 30),
-                  MainButton(text: 'Masuk', onPressed: () {}),
+                  MainButton(text: 'Masuk', onPressed: () {
+                    backToMainPage(context, HomePage());
+                  }),
                   SizedBox(height: 20),
                   CustomTextButton(text: 'Lewati', onClick: () {}),
                 ],
