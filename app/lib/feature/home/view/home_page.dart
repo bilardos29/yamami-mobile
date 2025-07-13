@@ -27,25 +27,13 @@ class _HomePageState extends State<HomePage> {
       body: SafeArea(
         child: Stack(
           children: [
-            ListView(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      _menu == 0
-                          ? DashboardPage()
-                          : _menu == 1
-                          ? WishlistPage()
-                          : _menu == 2
-                          ? TransactionHistoryPage()
-                          : ProfilePage(),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+            _menu == 0
+                ? DashboardPage()
+                : _menu == 1
+                ? WishlistPage()
+                : _menu == 2
+                ? TransactionHistoryPage()
+                : ProfilePage(),
             Positioned(
               bottom: 10,
               child: Container(

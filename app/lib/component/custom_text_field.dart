@@ -19,7 +19,7 @@ class CustomTextField extends StatefulWidget {
 }
 
 class _CustomTextFieldState extends State<CustomTextField> {
-  bool _obscureText = true;
+  bool _obscureText = false;
 
   void _toggleVisibility() {
     setState(() {
@@ -29,6 +29,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
 
   @override
   Widget build(BuildContext context) {
+    _obscureText = widget.isPassword;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
