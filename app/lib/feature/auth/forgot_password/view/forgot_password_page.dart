@@ -1,6 +1,7 @@
 import 'package:app/component/custom_text_field.dart';
 import 'package:app/component/main_button.dart';
 import 'package:app/feature/auth/login/view/login_page.dart';
+import 'package:app/feature/auth/otp/view/otp_reset_page.dart';
 import 'package:app/utils/utils.dart';
 import 'package:flutter/material.dart';
 
@@ -48,7 +49,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   MainButton(
                     text: 'Kirim',
                     onPressed: () {
-                      backToMainPage(context, LoginPage());
+                      nextPage(context, OtpResetPage());
                     },
                   ),
                 ],

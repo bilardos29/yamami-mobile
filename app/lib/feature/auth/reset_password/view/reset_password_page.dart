@@ -1,5 +1,7 @@
 import 'package:app/component/custom_text_field.dart';
 import 'package:app/component/main_button.dart';
+import 'package:app/feature/auth/login/view/login_page.dart';
+import 'package:app/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 class ResetPasswordPage extends StatefulWidget {
@@ -60,7 +62,9 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                   ),
                   SizedBox(height: 24),
                   SizedBox(height: 30),
-                  MainButton(text: 'Simpan', onPressed: () {}),
+                  MainButton(text: 'Simpan', onPressed: () {
+                    backToMainPage(context, LoginPage());
+                  }),
                 ],
               ),
             ),
