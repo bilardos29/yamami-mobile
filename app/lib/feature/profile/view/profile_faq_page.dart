@@ -1,5 +1,6 @@
 import 'package:app/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProfileFaqPage extends StatefulWidget {
   const ProfileFaqPage({super.key});
@@ -13,12 +14,12 @@ class _ProfileFaqPageState extends State<ProfileFaqPage> {
     {
       'question': 'Apakah produk tersedia?',
       'answer':
-          'Semua produk yang ditampilkan siap. Jika Anda ingin membeli dalam jumlah besar, silakan hubungi nomor WhatsApp yang tertera.',
+      'Semua produk yang ditampilkan siap. Jika Anda ingin membeli dalam jumlah besar, silakan hubungi nomor WhatsApp yang tertera.',
       'expanded': 'false',
     },
     {
       'question':
-          'Apakah harga yang tertera untuk produk sudah termasuk ongkos kirim?',
+      'Apakah harga yang tertera untuk produk sudah termasuk ongkos kirim?',
       'answer': 'Semua produk yang ditampilkan siap.',
       'expanded': 'false',
     },
@@ -29,31 +30,31 @@ class _ProfileFaqPageState extends State<ProfileFaqPage> {
     },
     {
       'question':
-          'Setelah saya melakukan pemesanan, kapan pesanan saya akan diproses?',
+      'Setelah saya melakukan pemesanan, kapan pesanan saya akan diproses?',
       'answer': 'Semua produk yang ditampilkan siap.',
       'expanded': 'false',
     },
     {
       'question':
-          'Bagaimana jika saya sudah membayar semua pesanan saya, tetapi barangnya habis?',
+      'Bagaimana jika saya sudah membayar semua pesanan saya, tetapi barangnya habis?',
       'answer': 'Semua produk yang ditampilkan siap.',
       'expanded': 'false',
     },
     {
       'question':
-          'Bagaimana jika saya secara tidak sengaja membeli barang yang salah, apakah bisa ditukar?',
+      'Bagaimana jika saya secara tidak sengaja membeli barang yang salah, apakah bisa ditukar?',
       'answer': 'Semua produk yang ditampilkan siap.',
       'expanded': 'false',
     },
     {
       'question':
-          'Jika saya ingin mengubah/menambah barang dalam pesanan saya, apakah itu mungkin?',
+      'Jika saya ingin mengubah/menambah barang dalam pesanan saya, apakah itu mungkin?',
       'answer': 'Semua produk yang ditampilkan siap.',
       'expanded': 'false',
     },
     {
       'question':
-          'Jika pesanan yang saya terima tidak sesuai dengan pesanan saya, apakah bisa dikembalikan?',
+      'Jika pesanan yang saya terima tidak sesuai dengan pesanan saya, apakah bisa dikembalikan?',
       'answer': 'Semua produk yang ditampilkan siap.',
       'expanded': 'false',
     },
@@ -102,29 +103,31 @@ class _ProfileFaqPageState extends State<ProfileFaqPage> {
                     faq['question']!,
                     style: TextStyle(
                       color:
-                          faq['expanded'] == 'true'
-                              ? Theme.of(context).primaryColor
-                              : Colors.black87,
+                      faq['expanded'] == 'true'
+                          ? Theme
+                          .of(context)
+                          .primaryColor
+                          : Colors.black87,
                     ),
                   ),
                   children:
-                      faq['answer']!.isNotEmpty
-                          ? [
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 16,
-                                vertical: 8,
-                              ),
-                              child: Align(
-                                alignment: Alignment.topLeft,
-                                child: Text(
-                                  faq['answer']!,
-                                  style: const TextStyle(color: Colors.black54),
-                                ),
-                              ),
-                            ),
-                          ]
-                          : [],
+                  faq['answer']!.isNotEmpty
+                      ? [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 8,
+                      ),
+                      child: Align(
+                        alignment: Alignment.topLeft,
+                        child: Text(
+                          faq['answer']!,
+                          style: const TextStyle(color: Colors.black54),
+                        ),
+                      ),
+                    ),
+                  ]
+                      : [],
                 );
               },
             ),
@@ -132,11 +135,26 @@ class _ProfileFaqPageState extends State<ProfileFaqPage> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        backgroundColor: Theme.of(context).primaryColor,
+        onPressed: () {
+          openWhatsApp('082130427999', 'Selamat datang di Yamami Baking');
+        },
+        backgroundColor: Theme
+            .of(context)
+            .primaryColor,
         shape: CircleBorder(),
         child: Image.asset('asset/icons/ic_chat.png', width: 20, height: 20),
       ),
     );
+  }
+
+  void openWhatsApp(String phone, String message) async {
+    final uri = Uri.parse(
+        "https://wa.me/$phone?text=${Uri.encodeFull(message)}");
+
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    } else {
+      throw 'Could not launch WhatsApp';
+    }
   }
 }
