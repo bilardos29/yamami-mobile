@@ -1,3 +1,5 @@
+import 'package:app/component/custom_text_button.dart';
+import 'package:app/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 class PaymentView extends StatelessWidget {
@@ -20,7 +22,8 @@ class PaymentView extends StatelessWidget {
             Text(
               "Segera lakukan pembayaran sebelum",
               style: TextStyle(
-                color: Colors.grey[600],
+                fontSize: 12,
+                color: Colors.grey[500],
                 fontStyle: FontStyle.italic,
               ),
             ),
@@ -28,24 +31,25 @@ class PaymentView extends StatelessWidget {
             Text(
               "$dueTime, $dueDate",
               style: TextStyle(
-                fontSize: 16,
+                fontSize: 14,
                 fontWeight: FontWeight.bold,
                 fontStyle: FontStyle.italic,
               ),
             ),
-            Divider(height: 32),
-            Text("Total Pembayaran", style: TextStyle(color: Colors.grey[600])),
-            SizedBox(height: 4),
+            Divider(height: 40),
+            Text(
+              "Total Pembayaran",
+              style: TextStyle(fontSize: 12, color: Colors.grey[500]),
+            ),
             Text(
               totalAmount,
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 16),
             Text(
               "Metode Pembayaran",
-              style: TextStyle(color: Colors.grey[600]),
+              style: TextStyle(fontSize: 12, color: Colors.grey[500]),
             ),
-            SizedBox(height: 8),
             Row(
               children: [
                 Image.asset("asset/images/ic_bca.png", width: 48),
@@ -56,9 +60,8 @@ class PaymentView extends StatelessWidget {
             SizedBox(height: 16),
             Text(
               "Nomor Virtual Account",
-              style: TextStyle(color: Colors.grey[600]),
+              style: TextStyle(fontSize: 12, color: Colors.grey[500]),
             ),
-            SizedBox(height: 4),
             Row(
               children: [
                 Text(
@@ -66,26 +69,17 @@ class PaymentView extends StatelessWidget {
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                 ),
                 Spacer(),
-                TextButton(
-                  onPressed: () {
-                    // copy to clipboard logic
-                  },
-                  child: Text(
-                    "Salin",
-                    style: TextStyle(color: Colors.amber[800]),
-                  ),
-                ),
+                CustomTextButton(text: 'Salin', onClick: () {}),
               ],
             ),
             Divider(height: 32),
             GestureDetector(
               onTap: () {
-                // open payment instruction
               },
               child: Text(
                 "Lihat Cara Pembayaran",
                 style: TextStyle(
-                  color: Colors.amber[800],
+                  color: Color(0xffB4870F),
                   fontWeight: FontWeight.w500,
                 ),
               ),

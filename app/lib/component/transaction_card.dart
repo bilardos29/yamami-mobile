@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 class TransactionCard extends StatelessWidget {
   final String status;
   final Color statusColor;
-  final String? invoice;
+  final String invoice;
+  final String timeLimit;
   final String storeName;
   final String productName;
   final String quantity;
@@ -16,7 +17,8 @@ class TransactionCard extends StatelessWidget {
     super.key,
     required this.status,
     required this.statusColor,
-    this.invoice,
+    required this.invoice,
+    required this.timeLimit,
     required this.storeName,
     required this.productName,
     required this.quantity,
@@ -46,7 +48,10 @@ class TransactionCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 4,
+                      ),
                       decoration: BoxDecoration(
                         color: statusColor.withOpacity(0.15),
                         borderRadius: BorderRadius.circular(6),
@@ -59,16 +64,41 @@ class TransactionCard extends StatelessWidget {
                         ),
                       ),
                     ),
-                    if (invoice != null)
+                    if (invoice.isNotEmpty)
                       Text(
                         invoice!,
                         style: TextStyle(color: Colors.grey.shade600),
-                      )
+                      ),
                   ],
                 ),
                 const SizedBox(height: 14),
                 dividerLine(padding: 0),
                 const SizedBox(height: 16),
+                if (timeLimit.isNotEmpty) ...[
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade100,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: Colors.grey.shade300),
+                    ),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.info, size: 18, color: Colors.orange),
+                        const SizedBox(width: 16),
+                        Text(
+                          "Sebelum $timeLimit",
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            fontStyle: FontStyle.italic,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                ],
                 Text(
                   storeName,
                   style: const TextStyle(
@@ -105,10 +135,7 @@ class TransactionCard extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 8),
-                Text(
-                  additional,
-                  style: const TextStyle(color: Colors.grey),
-                ),
+                Text(additional, style: const TextStyle(color: Colors.grey)),
               ],
             ),
             Positioned(
@@ -132,7 +159,7 @@ class TransactionCard extends StatelessWidget {
                         ),
                       ),
                     ],
-                  )
+                  ),
                 ],
               ),
             ),

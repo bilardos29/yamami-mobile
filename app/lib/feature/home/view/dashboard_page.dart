@@ -11,6 +11,7 @@ import 'package:app/feature/home/model/product_model.dart';
 import 'package:app/feature/home/view/header_menu.dart';
 import 'package:app/feature/loyalty/view/loyalty_page.dart';
 import 'package:app/feature/notification/view/notification_page.dart';
+import 'package:app/feature/product/view/detail_product_page.dart';
 import 'package:app/feature/search/view/search_page.dart';
 import 'package:app/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -139,7 +140,10 @@ class _DashboardPageState extends State<DashboardPage> {
                 crossAxisSpacing: 16,
                 children:
                     products.map((product) {
-                      return ProductCard(product: product);
+                      return ProductCard(
+                        product: product,
+                        onClick: () => nextPage(context, DetailProductPage()),
+                      );
                     }).toList(),
               ),
               SizedBox(height: 100),

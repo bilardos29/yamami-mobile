@@ -25,6 +25,7 @@ class _LoginPageState extends State<LoginPage> {
       bottomSheet: Container(
         height: 64,
         color: Colors.white,
+        margin: EdgeInsets.only(bottom: 12),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -67,7 +68,6 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                   ),
-
                   SizedBox(height: 24),
                   CustomTextField(label: 'No Telp/Email', controller: _email),
                   SizedBox(height: 24),
@@ -95,6 +95,7 @@ class _LoginPageState extends State<LoginPage> {
                   }),
                   SizedBox(height: 20),
                   CustomTextButton(text: 'Lewati', onClick: () {}),
+                  SizedBox(height: 40),
                 ],
               ),
             ),

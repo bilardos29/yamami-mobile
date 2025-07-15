@@ -27,6 +27,7 @@ class _RegisterPageState extends State<RegisterPage> {
       bottomSheet: Container(
         height: 64,
         color: Colors.white,
+        margin: EdgeInsets.only(bottom: 16),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -92,7 +93,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   MainButton(text: 'Daftar', onPressed: () {
                     nextPage(context, OtpPage());
                   }),
-                  SizedBox(height: 20),
+                  SizedBox(height: 120),
                 ],
               ),
             ),

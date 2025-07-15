@@ -19,12 +19,58 @@ class _TransactionHistoryPageState extends State<TransactionHistoryPage> {
     {
       'status': 'Menunggu Pembayaran',
       'statusColor': Colors.orange,
+      'invoice': '',
+      'storeName': 'Toko Bandung',
       'timeLimit': '24:00 WIB, 15 Agustus 2024',
+      'productName': 'GR-BK-0081 Sprinkles sprinkle....',
+      'quantity': 'x1',
+      'additional': '+1 produk lainnya',
+      'total': 'Rp 13.000',
     },
-    {'status': 'Diproses', 'statusColor': Colors.blue, 'timeLimit': ''},
-    {'status': 'Dalam Pengiriman', 'statusColor': Colors.lightBlue},
-    {'status': 'Selesai', 'statusColor': Colors.green, 'timeLimit': ''},
-    {'status': 'Dibatalkan', 'statusColor': Colors.grey, 'timeLimit': ''},
+    {
+      'status': 'Diproses',
+      'statusColor': Colors.blue,
+      'invoice': 'INV12349898989',
+      'storeName': 'Toko Bandung',
+      'timeLimit': '',
+      'productName': 'GR-BK-0081 Sprinkles sprinkle....',
+      'quantity': 'x1',
+      'additional': '+1 produk lainnya',
+      'total': 'Rp 13.000',
+    },
+    {
+      'status': 'Dalam Pengiriman',
+      'statusColor': Colors.lightBlue,
+      'invoice': 'INV12349898989',
+      'storeName': 'Toko Bandung',
+      'timeLimit': '',
+      'productName': 'GR-BK-0081 Sprinkles sprinkle....',
+      'quantity': 'x1',
+      'additional': '+1 produk lainnya',
+      'total': 'Rp 13.000',
+    },
+    {
+      'status': 'Selesai',
+      'statusColor': Colors.green,
+      'invoice': 'INV12349898989',
+      'storeName': 'Toko Bandung',
+      'timeLimit': '',
+      'productName': 'GR-BK-0081 Sprinkles sprinkle....',
+      'quantity': 'x1',
+      'additional': '+1 produk lainnya',
+      'total': 'Rp 13.000',
+    },
+    {
+      'status': 'Dibatalkan',
+      'statusColor': Colors.grey,
+      'invoice': '',
+      'storeName': 'Toko Bandung',
+      'timeLimit': '',
+      'productName': 'GR-BK-0081 Sprinkles sprinkle....',
+      'quantity': 'x1',
+      'additional': '+1 produk lainnya',
+      'total': 'Rp 13.000',
+    },
   ];
 
   int selectedIndex = 0;
@@ -37,6 +83,15 @@ class _TransactionHistoryPageState extends State<TransactionHistoryPage> {
     'Selesai',
     'Dibatalkan',
   ];
+
+  List<Map<String, Object>> filterList = [];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    filterList = List.from(orders);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +118,19 @@ class _TransactionHistoryPageState extends State<TransactionHistoryPage> {
                       label: options[index],
                       isSelected: selectedIndex == index,
                       onPressed: () {
-                        setState(() => selectedIndex = index);
+                        final selectedOption = options[index];
+                        setState(() {
+                          if (selectedOption == 'Semua') {
+                            filterList = List.from(orders);
+                          } else {
+                            filterList =
+                                orders
+                                    .where((e) => e['status'] == selectedOption)
+                                    .toList();
+                          }
+
+                          selectedIndex = index;
+                        });
                       },
                     ),
                   );
@@ -71,88 +138,49 @@ class _TransactionHistoryPageState extends State<TransactionHistoryPage> {
               ),
             ),
             SizedBox(height: 12),
-            Column(
-              children: [
-                TransactionCard(
-                  status: 'Menunggu Pembayaran',
-                  statusColor: Colors.orange,
-                  storeName: 'Toko Bandung',
-                  productName: 'GR-BK-0081 Sprinkles sprinkle....',
-                  quantity: 'x1',
-                  additional: '+1 produk lainnya',
-                  total: 'Rp 13.000',
-                  onClick: (){
-                    nextPage(context, OrderDetailPage(status: OrderStatus.waitingPayment));
+            ListView.builder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: filterList.length,
+              itemBuilder: (context, index) {
+                final order = filterList[index];
+                final color =
+                    order['status'] == 'Menunggu Pembayaran'
+                        ? Colors.orange
+                        : order['status'] == 'Diproses'
+                        ? Colors.blue
+                        : order['status'] == 'Dalam Pengiriman'
+                        ? Colors.lightBlue
+                        : order['status'] == 'Selesai'
+                        ? Colors.green
+                        : Colors.grey;
+                OrderStatus status =
+                    order['status'] == 'Menunggu Pembayaran'
+                        ? OrderStatus.waitingPayment
+                        : order['status'] == 'Diproses'
+                        ? OrderStatus.processed
+                        : order['status'] == 'Dalam Pengiriman'
+                        ? OrderStatus.shipped
+                        : order['status'] == 'Dibatalkan'
+                        ? OrderStatus.canceled
+                        : OrderStatus.completed;
+                return TransactionCard(
+                  status: '${order['status']!}',
+                  statusColor: color,
+                  invoice: '${order['invoice']!}',
+                  timeLimit: '${order['timeLimit']!}',
+                  storeName: '${order['storeName']!}',
+                  productName: '${order['productName']!}',
+                  quantity: '${order['quantity']!}',
+                  additional: '${order['additional']!}',
+                  total: '${order['total']!}',
+                  onClick: () {
+                    nextPage(context, OrderDetailPage(status: status));
                   },
-                ),
-                TransactionCard(
-                  status: 'Diproses',
-                  statusColor: Colors.blue,
-                  invoice: 'INV12349898989',
-                  storeName: 'Toko Bandung',
-                  productName: 'GR-BK-0081 Sprinkles sprinkle....',
-                  quantity: 'x1',
-                  additional: '+1 produk lainnya',
-                  total: 'Rp 13.000',
-                  onClick: (){
-                    nextPage(context, OrderDetailPage(status: OrderStatus.processed));
-                  },
-                ),
-                TransactionCard(
-                  status: 'Dalam Pengiriman',
-                  statusColor: Colors.blue,
-                  invoice: 'INV12349898989',
-                  storeName: 'Toko Bandung',
-                  productName: 'GR-BK-0081 Sprinkles sprinkle....',
-                  quantity: 'x1',
-                  additional: '+1 produk lainnya',
-                  total: 'Rp 13.000',
-                  onClick: (){
-                    nextPage(context, OrderDetailPage(status: OrderStatus.shipped));
-                  },
-                ),
-                TransactionCard(
-                  status: 'Selesai',
-                  statusColor: Colors.green,
-                  invoice: 'INV12349898989',
-                  storeName: 'Toko Bandung',
-                  productName: 'GR-BK-0081 Sprinkles sprinkle....',
-                  quantity: 'x1',
-                  additional: '+1 produk lainnya',
-                  total: 'Rp 13.000',
-                  onClick: (){
-                    nextPage(context, OrderDetailPage(status: OrderStatus.completed));
-                  },
-                ),
-                TransactionCard(
-                  status: 'Dibatalkan',
-                  statusColor: Colors.grey,
-                  storeName: 'Toko Bandung',
-                  productName: 'GR-BK-0081 Sprinkles sprinkle....',
-                  quantity: 'x1',
-                  additional: '+1 produk lainnya',
-                  total: 'Rp 13.000',
-                  onClick: (){
-                    nextPage(context, OrderDetailPage(status: OrderStatus.canceled));
-                  },
-                ),
-                SizedBox(height: 100),
-              ],
+                );
+              },
             ),
-
-            // ListView.builder(
-            //   shrinkWrap: true,
-            //   physics: NeverScrollableScrollPhysics(),
-            //   itemCount: orders.length,
-            //   itemBuilder: (context, index) {
-            //     final order = orders[index];
-            //     return TransactionCard(
-            //       shopName: 'Toko Bandung',
-            //       productImageUrl: 'asset/images/img_6.png',
-            //       productTitle: 'GR-BK-0081 Sprinkles sprinkle...',
-            //       totalPrice: 13000,
-            //       dueDate: '${order['timeLimit']!}',
-            //     );
+            SizedBox(height: 100),
           ],
         ),
       ),

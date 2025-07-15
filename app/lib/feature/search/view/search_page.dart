@@ -1,6 +1,7 @@
 import 'package:app/component/product_card.dart';
 import 'package:app/feature/cart/view/cart_page.dart';
 import 'package:app/feature/home/model/product_model.dart';
+import 'package:app/feature/product/view/detail_product_page.dart';
 import 'package:app/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -129,7 +130,10 @@ class _SearchPageState extends State<SearchPage> {
                     store: product["location"],
                     discountLabel: product["discount"] == true ? '-50%' : '',
                   );
-                  return ProductCard(product: item);
+                  return ProductCard(
+                    product: item,
+                    onClick: () => nextPage(context, DetailProductPage()),
+                  );
                 }).toList(),
           ),
         ),

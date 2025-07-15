@@ -122,10 +122,8 @@ class DetailPaymentView extends StatelessWidget {
             ElevatedButton(onPressed: () {}, child: const Text("Beli Lagi")),
           ],
         );
-      case OrderStatus.canceled:
-        return MainButton(text: 'Beli Lagi', onPressed: (){
-
-        });
+      case OrderStatus.canceled: return Container();
+      //   return MainButton(text: 'Beli Lagi', onPressed: (){});
     }
   }
 }

@@ -112,17 +112,18 @@ class _ReviewCardState extends State<ReviewCard> {
           const SizedBox(height: 12),
           const Text("Rating Produk"),
           const SizedBox(height: 4),
-          RatingBar.builder(
+          RatingBar(
             initialRating: rating,
             minRating: 1,
             direction: Axis.horizontal,
+            allowHalfRating: true,
             itemCount: 5,
             itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-            itemBuilder: (context, _) => const Icon(
-              Icons.star_border_outlined,
-              color: Colors.amber,
+            ratingWidget: RatingWidget(
+              full: const Icon(Icons.star, color: Colors.amber),
+              empty: const Icon(Icons.star_border_outlined, color: Colors.grey),
+              half: const Icon(Icons.star_half, color: Colors.amber), // optional
             ),
-            unratedColor: Colors.grey[300],
             onRatingUpdate: (value) {
               setState(() {
                 rating = value;

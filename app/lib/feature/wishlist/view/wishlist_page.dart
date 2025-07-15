@@ -4,6 +4,7 @@ import 'package:app/feature/cart/view/cart_page.dart';
 import 'package:app/feature/home/model/product_model.dart';
 import 'package:app/feature/home/view/header_menu.dart';
 import 'package:app/feature/notification/view/notification_page.dart';
+import 'package:app/feature/product/view/detail_product_page.dart';
 import 'package:app/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -63,7 +64,9 @@ class _WishlistPageState extends State<WishlistPage> {
             mainAxisSpacing: 16,
             crossAxisSpacing: 16,
             children: products.map((product) {
-              return ProductCard(product: product);
+              return ProductCard(product: product, onClick: (){
+                nextPage(context, DetailProductPage());
+              });
             }).toList(),
           ),
         ],

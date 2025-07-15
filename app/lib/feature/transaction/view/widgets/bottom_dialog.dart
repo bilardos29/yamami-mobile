@@ -4,18 +4,14 @@ class BottomDialog extends StatelessWidget {
   final String status;
   final List<OrderStep> steps;
 
-  const BottomDialog({
-    super.key,
-    required this.status,
-    required this.steps,
-  });
+  const BottomDialog({super.key, required this.status, required this.steps});
 
   @override
   Widget build(BuildContext context) {
     return DraggableScrollableSheet(
-      initialChildSize: 0.6,
+      initialChildSize: steps.length == 2 ? 0.3 : 0.5,
       maxChildSize: 0.95,
-      minChildSize: 0.4,
+      minChildSize: 0.3,
       builder: (context, scrollController) {
         return Container(
           decoration: const BoxDecoration(
@@ -58,54 +54,80 @@ class BottomDialog extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Icon(
-              isCompleted
-                  ? Icons.check_circle
-                  : Icons.radio_button_unchecked,
-              color: isCompleted || isCurrent ? Colors.green : Colors.grey,
-              size: 20,
+            Padding(
+              padding: const EdgeInsets.only(top: 4),
+              child: Icon(
+                isCompleted ? Icons.check_circle : Icons.circle,
+                color: isCompleted || isCurrent ? Colors.green : Colors.grey,
+                size: 14,
+              ),
             ),
             const SizedBox(width: 8),
             Expanded(
-              child: Text(
-                step.title,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: isCompleted || isCurrent ? Colors.black : Colors.grey,
-                ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        step.title,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      ),
+                      const Spacer(),
+                      Text(
+                        step.date,
+                        style: const TextStyle(
+                          color: Color(0xff4A4337),
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
+                  ),
+                  if (step.subtitle != null || step.mapUrl != null) ...[
+                    const SizedBox(height: 12),
+                    if (step.subtitle != null)
+                      Text(
+                        step.subtitle!,
+                        style: const TextStyle(color: Colors.black87),
+                      ),
+                    if (step.mapUrl != null) ...[
+                      const SizedBox(height: 12),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: Image.asset('asset/images/${step.mapUrl!}'),
+                      ),
+                      const SizedBox(height: 8),
+                      Row(
+                        children: [
+                          CircleAvatar(
+                            backgroundImage: AssetImage(
+                              'asset/images/${step.courierImage}',
+                            ),
+                          ),
+                          SizedBox(width: 12),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(step.courierName ?? ''),
+                              Text(step.courierInfo ?? '')
+                            ],
+                          )
+                        ],
+                      ),
+                    ],
+                    Divider(height: 30),
+                  ],
+                ],
               ),
-            ),
-            Text(
-              step.date,
-              style: const TextStyle(color: Colors.grey),
             ),
           ],
         ),
-        if (step.subtitle != null || step.mapUrl != null) ...[
-          const SizedBox(height: 6),
-          if (step.subtitle != null)
-            Text(
-              step.subtitle!,
-              style: const TextStyle(color: Colors.black87),
-            ),
-          if (step.mapUrl != null) ...[
-            const SizedBox(height: 12),
-            ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: Image.network(step.mapUrl!),
-            ),
-            const SizedBox(height: 8),
-            ListTile(
-              contentPadding: EdgeInsets.zero,
-              leading: CircleAvatar(
-                backgroundImage: NetworkImage(step.courierImage ?? ''),
-              ),
-              title: Text(step.courierName ?? ''),
-              subtitle: Text(step.courierInfo ?? ''),
-            )
-          ],
-        ],
+
         const SizedBox(height: 16),
       ],
     );
@@ -119,9 +141,7 @@ class OrderStep {
   final String date;
   final String? subtitle;
   final String? mapUrl;
-  final OrderStepStatus status;
-
-  // Optional for "Dalam Pengiriman"
+  OrderStepStatus status;
   final String? courierName;
   final String? courierInfo;
   final String? courierImage;

@@ -19,10 +19,31 @@ enum OrderStatus {
   done,
 }
 
-class OrderDetailPage extends StatelessWidget {
+class OrderDetailPage extends StatefulWidget {
   final OrderStatus status;
 
-  const OrderDetailPage({super.key, required this.status});
+  const OrderDetailPage({required this.status, super.key});
+
+  @override
+  State<OrderDetailPage> createState() => _OrderDetailPageState();
+}
+
+class _OrderDetailPageState extends State<OrderDetailPage> {
+  List<OrderStep> listStep = [
+    OrderStep(
+      title: 'Diproses',
+      date: '15 Agustus 2024',
+      subtitle: 'Pesanan telah diproses oleh Jahitmart',
+      status: OrderStepStatus.completed,
+    ),
+    OrderStep(
+      title: 'Menunggu Pembayaran',
+      date: '15 Agustus 2024',
+      subtitle: 'Pembayaran telah dilakukan',
+      status: OrderStepStatus.pending,
+    ),
+  ];
+  List<OrderStep> listFilterStep = [];
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +60,7 @@ class OrderDetailPage extends StatelessWidget {
         children: [
           _buildStatusSection(context),
           const SizedBox(height: 12),
-          if (status != OrderStatus.waitingPayment) ...[
+          if (widget.status != OrderStatus.waitingPayment) ...[
             AddressView(
               namaPenerima: "Raska Amelia",
               nomorHp: "087878793893",
@@ -50,10 +71,10 @@ class OrderDetailPage extends StatelessWidget {
             ),
             const SizedBox(height: 12),
           ],
-          ProductView(status: status),
+          ProductView(status: widget.status),
           const SizedBox(height: 12),
-          DetailPaymentView(status: status),
-          if (status == OrderStatus.waitingPayment) ...[
+          DetailPaymentView(status: widget.status),
+          if (widget.status == OrderStatus.waitingPayment) ...[
             const SizedBox(height: 12),
             AddressView(
               namaPenerima: "Raska Amelia",
@@ -78,7 +99,7 @@ class OrderDetailPage extends StatelessWidget {
           OrderStatus.completed: 'Selesai',
           OrderStatus.reviewed: 'Selesai',
           OrderStatus.canceled: 'Dibatalkan',
-        }[status]!;
+        }[widget.status]!;
 
     final color =
         {
@@ -88,7 +109,7 @@ class OrderDetailPage extends StatelessWidget {
           OrderStatus.completed: Colors.green,
           OrderStatus.reviewed: Colors.green,
           OrderStatus.canceled: Colors.grey,
-        }[status]!;
+        }[widget.status]!;
 
     return Container(
       color: Colors.white,
@@ -109,19 +130,69 @@ class OrderDetailPage extends StatelessWidget {
                 ),
               ),
               const Spacer(),
-              if (!(status == OrderStatus.waitingPayment ||
-                  status == OrderStatus.canceled))
-                CustomTextButton(text: 'Lihat Detail', onClick: () {
-                  bottomModel(ctx);
-                }),
+              if (!(widget.status == OrderStatus.waitingPayment ||
+                  widget.status == OrderStatus.canceled))
+                CustomTextButton(
+                  text: 'Lihat Detail',
+                  onClick: () {
+                    if (widget.status == OrderStatus.processed) {
+                      listFilterStep = [];
+                      listFilterStep = List.from(listStep);
+                    }
+                    if (widget.status == OrderStatus.shipped) {
+                      listFilterStep = [];
+                      listFilterStep.add(
+                        OrderStep(
+                          title: 'Dalam Pengiriman',
+                          date: '15 Agustus 2024',
+                          subtitle: 'Pesanan dalam pengiriman',
+                          mapUrl: 'sample_map.png',
+                          courierName: 'Gege Yu',
+                          courierInfo: 'D 7678 XYZ',
+                          courierImage: 'img_usr_1.png',
+                          status: OrderStepStatus.completed,
+                        ),
+                      );
+                      listStep[1].status = OrderStepStatus.pending;
+                      listStep[0].status = OrderStepStatus.pending;
+                      listFilterStep.addAll(List.from(listStep));
+                    } else if (widget.status == OrderStatus.completed) {
+                      listFilterStep = [];
+                      listFilterStep.add(
+                        OrderStep(
+                          title: 'Selesai',
+                          date: '19 Agustus 2024',
+                          subtitle: 'Pesanan telah selesai',
+                          status: OrderStepStatus.completed,
+                        ),
+                      );
+                      listFilterStep.add(
+                        OrderStep(
+                          title: 'Dalam Pengiriman',
+                          date: '15 Agustus 2024',
+                          subtitle: 'Pesanan dalam pengiriman',
+                          mapUrl: 'sample_map.png',
+                          courierName: 'Gege Yu',
+                          courierInfo: 'D 7678 XYZ',
+                          courierImage: 'img_usr_1.png',
+                          status: OrderStepStatus.pending,
+                        ),
+                      );
+                      listStep[1].status = OrderStepStatus.pending;
+                      listStep[0].status = OrderStepStatus.pending;
+                      listFilterStep.addAll(List.from(listStep));
+                    }
+                    bottomModel(ctx);
+                  },
+                ),
             ],
           ),
           const SizedBox(height: 16),
-          if (status != OrderStatus.waitingPayment) ...[
+          if (widget.status != OrderStatus.waitingPayment) ...[
             _buildOrderInfo(),
             const SizedBox(height: 16),
           ],
-          if (status == OrderStatus.waitingPayment) ...[
+          if (widget.status == OrderStatus.waitingPayment) ...[
             PaymentView(),
             const SizedBox(height: 16),
           ],
@@ -135,40 +206,7 @@ class OrderDetailPage extends StatelessWidget {
     isScrollControlled: true,
     backgroundColor: Colors.transparent,
     builder: (_) {
-      return BottomDialog(
-        status: 'Selesai',
-        steps: [
-          OrderStep(
-            title: 'Selesai',
-            date: '19 Agustus 2024',
-            subtitle: 'Pesanan telah selesai',
-            status: OrderStepStatus.completed,
-          ),
-          OrderStep(
-            title: 'Dalam Pengiriman',
-            date: '15 Agustus 2024',
-            subtitle: 'Pesanan dalam pengiriman',
-            mapUrl: 'https://maps.googleapis.com/map.png',
-            // placeholder
-            courierName: 'Gege Yu',
-            courierInfo: 'D 7678 XYZ',
-            courierImage: 'https://randomuser.me/api/portraits/men/1.jpg',
-            status: OrderStepStatus.completed,
-          ),
-          OrderStep(
-            title: 'Diproses',
-            date: '15 Agustus 2024',
-            subtitle: 'Pesanan telah diproses oleh Jahitmart',
-            status: OrderStepStatus.completed,
-          ),
-          OrderStep(
-            title: 'Menunggu Pembayaran',
-            date: '15 Agustus 2024',
-            subtitle: 'Pembayaran telah dilakukan',
-            status: OrderStepStatus.completed,
-          ),
-        ],
-      );
+      return BottomDialog(status: 'Selesai', steps: listFilterStep);
     },
   );
 
@@ -180,7 +218,7 @@ class OrderDetailPage extends StatelessWidget {
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (status != OrderStatus.canceled) ...[
+            if (widget.status != OrderStatus.canceled) ...[
               Text(
                 "INV12349898989",
                 style: TextStyle(fontWeight: FontWeight.bold),

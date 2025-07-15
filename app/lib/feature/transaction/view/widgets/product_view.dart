@@ -82,9 +82,41 @@ class ProductView extends StatelessWidget {
                 children: [
                   Text(product, overflow: TextOverflow.ellipsis),
                   const SizedBox(width: 4),
-                  Text(detail, style: TextStyle(color: Color(0xff8C867D))),
-                  const SizedBox(width: 4),
-                  Text(price, style: TextStyle(fontWeight: FontWeight.bold)),
+                  Row(
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            detail,
+                            style: TextStyle(color: Color(0xff8C867D)),
+                          ),
+                          const SizedBox(width: 4),
+                          Text(
+                            price,
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                      const Spacer(),
+                      if (status == OrderStatus.canceled)
+                        ElevatedButton(
+                          onPressed: () {},
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Color(0xFFB4870F),
+                            padding: const EdgeInsets.symmetric(horizontal: 12),
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                          ),
+                          child: const Text(
+                            "Beli Lagi",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                    ],
+                  ),
                 ],
               ),
             ),
