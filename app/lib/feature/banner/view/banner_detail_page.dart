@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class BannerDetailPage extends StatelessWidget {
-  const BannerDetailPage({super.key});
+  final String image;
+  const BannerDetailPage({required this.image, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +28,7 @@ class BannerDetailPage extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(16),
               child: Image.asset(
-                "asset/images/promo_banner.png",
+                "asset/banner/$image",
                 fit: BoxFit.cover,
               ),
             ),

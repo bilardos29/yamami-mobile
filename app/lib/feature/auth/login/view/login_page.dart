@@ -94,7 +94,9 @@ class _LoginPageState extends State<LoginPage> {
                     backToMainPage(context, HomePage());
                   }),
                   SizedBox(height: 20),
-                  CustomTextButton(text: 'Lewati', onClick: () {}),
+                  CustomTextButton(text: 'Lewati', onClick: () {
+                    backToMainPage(context, HomePage());
+                  }),
                   SizedBox(height: 40),
                 ],
               ),

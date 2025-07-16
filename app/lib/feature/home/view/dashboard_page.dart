@@ -6,6 +6,7 @@ import 'package:app/component/product_card.dart';
 import 'package:app/component/promo_discount_card.dart';
 import 'package:app/component/user_greeting.dart';
 import 'package:app/feature/banner/view/banner_detail_page.dart';
+import 'package:app/feature/banner/view/list_banner_page.dart';
 import 'package:app/feature/cart/view/cart_page.dart';
 import 'package:app/feature/home/model/product_model.dart';
 import 'package:app/feature/home/view/header_menu.dart';
@@ -32,6 +33,13 @@ class _DashboardPageState extends State<DashboardPage> {
     'Terbaru',
     'Terlaris',
     'Terakhir Dilihat',
+  ];
+
+  final List<String> images = [
+    'banner_1.png',
+    'banner_2.png',
+    'banner_3.png',
+    'banner_4.png',
   ];
 
   @override
@@ -67,11 +75,14 @@ class _DashboardPageState extends State<DashboardPage> {
               ),
               SizedBox(height: 20),
               PromoBanner(
-                image: 'promo_banner.png',
-                currentIndex: 1,
+                images: images,
+                currentIndex: 2,
                 totalBanner: 4,
                 onClick: () {
-                  nextPage(context, BannerDetailPage());
+                  nextPage(context, BannerDetailPage(image: images[2]));
+                },
+                onSeeAll: () {
+                  nextPage(context, ListBannerPage(images: images));
                 },
               ),
               SizedBox(height: 20),
