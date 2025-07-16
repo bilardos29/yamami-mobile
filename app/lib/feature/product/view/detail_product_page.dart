@@ -1,4 +1,9 @@
+import 'package:app/component/product_card.dart';
+import 'package:app/feature/home/model/product_model.dart';
+import 'package:app/utils/utils.dart';
 import 'package:flutter/material.dart';
+
+import '../../transaction/view/widgets/review_card.dart';
 
 class DetailProductPage extends StatefulWidget {
   const DetailProductPage({super.key});
@@ -12,24 +17,27 @@ class _DetailProductPageState extends State<DetailProductPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Detail Produk'),
+        title: const Text(''),
         actions: [
-          IconButton(icon: const Icon(Icons.share), onPressed: () {}),
-          IconButton(icon: const Icon(Icons.shopping_cart_outlined), onPressed: () {}),
+          buildIconWithBadge(image: 'ic_cart.png', onTap: () {}),
+          const SizedBox(width: 8),
+          buildIconWithBadge(
+            image: 'ic_share.png',
+            withRedDot: false,
+            onTap: () {},
+          ),
+          const SizedBox(width: 16),
         ],
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // Gambar Produk
             Image.asset(
               'asset/images/img_5.png',
               width: double.infinity,
-              height: 250,
+              height: 400,
               fit: BoxFit.cover,
             ),
-
-            // Informasi Produk
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
@@ -37,197 +45,215 @@ class _DetailProductPageState extends State<DetailProductPage> {
                 children: [
                   Text(
                     'GR-BK-0081 Sprinkles sprinkle sprinkle 30..',
-                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
                   ),
                   const SizedBox(height: 8),
                   Row(
                     children: const [
                       Chip(
-                        label: Text('-50%', style: TextStyle(color: Colors.white)),
+                        label: Text(
+                          '-50%',
+                          style: TextStyle(color: Colors.white),
+                        ),
                         backgroundColor: Colors.red,
                         visualDensity: VisualDensity.compact,
                       ),
                       SizedBox(width: 8),
-                      Text('Rp7.500',
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                      Text(
+                        'Rp7.500',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
+                      ),
                       SizedBox(width: 8),
-                      Text('Rp15.000',
-                          style: TextStyle(
-                              decoration: TextDecoration.lineThrough, color: Colors.grey)),
+                      Text(
+                        'Rp15.000',
+                        style: TextStyle(
+                          decoration: TextDecoration.lineThrough,
+                          color: Colors.grey,
+                        ),
+                      ),
                     ],
                   ),
                   const SizedBox(height: 16),
-
-                  // Variasi Produk
                   Row(
                     children: [
-                      _buildVariationButton('Variasi 1'),
+                      _buildVariationButton('Variasi 1', isSelected: true),
                       _buildVariationButton('Variasi 2'),
                       _buildVariationButton('Variasi 3'),
-                      ElevatedButton(
-                        onPressed: () {},
-                        child: const Text('+3'),
-                        style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          backgroundColor: Colors.grey[200],
-                          foregroundColor: Colors.black,
-                          elevation: 0,
-                        ),
-                      )
+                      SizedBox(
+                        width: 50,
+                        child: btnBottom('+3', isBorderButton: true),
+                      ),
                     ],
                   ),
-
                   const SizedBox(height: 24),
                   const Divider(),
-
-                  // Deskripsi dan Informasi
                   ExpansionTile(
                     title: const Text("Deskripsi"),
-                    children: const [Padding(padding: EdgeInsets.all(8.0), child: Text('Deskripsi produk di sini...'))],
+                    tilePadding: EdgeInsets.zero,
+                    children: const [
+                      Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text('Deskripsi produk di sini...'),
+                      ),
+                    ],
                   ),
                   ExpansionTile(
                     title: const Text("Informasi Lainnya"),
+                    tilePadding: EdgeInsets.zero,
                     children: [
-                      ListTile(
-                        leading: const CircleAvatar(
-                          backgroundImage: AssetImage('asset/images/img_6.png'),
-                        ),
-                        title: const Text('Yamama Bandung'),
-                        subtitle: const Text('Kota Bandung'),
-                        trailing: OutlinedButton(
-                          onPressed: () {},
-                          child: const Text("Kunjungi Toko"),
-                        ),
-                      )
+                      Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text('Informasi lainnya di sini...'),
+                      ),
                     ],
                   ),
-
+                  const SizedBox(height: 12),
                   const Divider(),
-
-                  // Ulasan
+                  const SizedBox(height: 12),
+                  Row(
+                    children: [
+                      const CircleAvatar(
+                        backgroundImage: AssetImage(
+                          'asset/images/img_usr_1.png',
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Yamama Bandung'),
+                          Text('Kota Bandung'),
+                        ],
+                      ),
+                      const Spacer(),
+                      SizedBox(
+                        width: 120,
+                        child: btnBottom('Kunjungi Toko', isBorderButton: true),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  const Divider(height: 20),
+                  const SizedBox(height: 12),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: const [
-                      Text("Ulasan", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                      Text("Lihat Semua", style: TextStyle(color: Colors.orange)),
+                      Text(
+                        "Ulasan",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                        ),
+                      ),
+                      Text(
+                        "Lihat Semua",
+                        style: TextStyle(color: Color(0xffB4870F)),
+                      ),
                     ],
                   ),
                   const SizedBox(height: 12),
-                  ListTile(
-                    leading: const CircleAvatar(
-                      backgroundImage: AssetImage('asset/images/img_7.png'),
-                    ),
-                    title: const Text('Bessie Cooper'),
-                    subtitle: const Text("11 Februari 2023"),
-                    trailing: const Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(Icons.star, color: Colors.orange, size: 16),
-                        Text('5.0'),
-                      ],
-                    ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Text(
-                      'Lorem ipsum dolor sit amet, conse dipiscing elit, sed do eiusmod tempor incididunt...',
-                      style: TextStyle(fontSize: 14),
-                    ),
-                  ),
-
+                  ReviewCard(),
                   const SizedBox(height: 24),
-
-                  // Produk Terkait
-                  const Text("Produk Terkait", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                  const SizedBox(height: 12),
-                  SizedBox(
-                    height: 210,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: 3,
-                      itemBuilder: (_, index) => _buildRelatedProduct(),
-                    ),
+                  const Text(
+                    "Produk Terkait",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                   ),
+                  const SizedBox(height: 12),
+                  _buildRelatedProduct(),
                 ],
               ),
             ),
           ],
         ),
       ),
-
-      // Tombol Bawah
       bottomNavigationBar: Container(
         padding: const EdgeInsets.all(16),
         decoration: const BoxDecoration(
           border: Border(top: BorderSide(color: Colors.grey)),
         ),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Icon(Icons.favorite_border, color: Colors.grey),
-            const SizedBox(width: 12),
-            Expanded(
-              child: ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.orange),
-                child: const Text('Beli Sekarang'),
-              ),
-            ),
-            const SizedBox(width: 12),
-            ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(backgroundColor: Colors.yellow[700]),
-              child: const Text('+ Keranjang'),
-            )
+            const SizedBox(width: 6),
+            Expanded(child: btnBottom('Beli Sekarang', isBorderButton: true)),
+            const SizedBox(width: 6),
+            Expanded(child: btnBottom('+ Keranjang')),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildVariationButton(String label) {
+  Widget btnBottom(String txt, {bool isBorderButton = false}) => Container(
+    height: 44,
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(12),
+      color: isBorderButton ? Colors.white : Color(0xffB4870F),
+      border:
+          !isBorderButton
+              ? null
+              : Border.all(color: Color(0xffB4870F), width: 1),
+    ),
+    alignment: Alignment.center,
+    child: Text(
+      txt,
+      style: TextStyle(
+        color: isBorderButton ? Color(0xffB4870F) : Colors.white,
+        fontSize: 14,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
+  );
+
+  Widget _buildVariationButton(String label, {bool isSelected = false}) {
     return Padding(
-      padding: const EdgeInsets.only(right: 8.0),
-      child: OutlinedButton(
-        onPressed: () {},
-        child: Text(label),
+      padding: const EdgeInsets.only(right: 6),
+      child: Container(
+        height: 44,
+        padding: EdgeInsets.symmetric(vertical: 6, horizontal: 8),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          color: isSelected ? Color(0xffFFF4BA) : Colors.white,
+          border: Border.all(
+            color: isSelected ? Color(0xffB4870F) : Colors.black45,
+            width: 1,
+          ),
+        ),
+        alignment: Alignment.center,
+        child: Text(
+          label,
+          style: TextStyle(
+            color: isSelected ? Color(0xffB4870F) : Colors.black45,
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
     );
   }
 
   Widget _buildRelatedProduct() {
-    return Container(
-      width: 140,
-      margin: const EdgeInsets.only(right: 12),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey[200]!),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Image.asset(
-            'asset/images/img_6.png',
-            height: 100,
-            width: 140,
-            fit: BoxFit.cover,
-          ),
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Text(
-              'GR-BK-0081 Sprinkles sprinkle sprinkle 30..',
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8),
-            child: Text('Rp7.500', style: TextStyle(fontWeight: FontWeight.bold)),
-          ),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8),
-            child: Text('Yamama Bandung', style: TextStyle(fontSize: 12, color: Colors.grey)),
-          )
-        ],
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children:
+            products.map((product) {
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ProductCard(
+                  product: product,
+                  maxlines: 1,
+                  onClick: () => nextPage(context, DetailProductPage()),
+                ),
+              );
+            }).toList(),
       ),
     );
   }

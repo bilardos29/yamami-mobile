@@ -78,6 +78,7 @@ Widget emptyState(
 
 Widget buildIconWithBadge({
   required String image,
+  bool withRedDot = true,
   required VoidCallback? onTap,
 }) {
   return Stack(
@@ -92,18 +93,19 @@ Widget buildIconWithBadge({
           color: Colors.brown,
         ),
       ),
-      Positioned(
-        right: -2,
-        top: -2,
-        child: Container(
-          width: 10,
-          height: 10,
-          decoration: const BoxDecoration(
-            color: Colors.red,
-            shape: BoxShape.circle,
+      if (withRedDot)
+        Positioned(
+          right: -2,
+          top: -2,
+          child: Container(
+            width: 10,
+            height: 10,
+            decoration: const BoxDecoration(
+              color: Colors.red,
+              shape: BoxShape.circle,
+            ),
           ),
         ),
-      ),
     ],
   );
 }

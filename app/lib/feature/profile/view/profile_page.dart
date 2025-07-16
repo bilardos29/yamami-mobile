@@ -27,7 +27,7 @@ class _ProfilePageState extends State<ProfilePage> {
     {'icon': 'ic_profil.png', 'title': 'Profil'},
     {'icon': 'ic_change_password.png', 'title': 'Ubah Kata Sandi'},
     {'icon': 'ic_change_address.png', 'title': 'Atur Alamat'},
-    {'icon': 'ic_privacy.png', 'title': 'Syarat dan Ketentuan'},
+    {'icon': 'ic_terms.png', 'title': 'Syarat dan Ketentuan'},
     {'icon': 'ic_privacy.png', 'title': 'Kebijakan Privasi'},
     {'icon': 'ic_delete_acc.png', 'title': 'Hapus Akun Privasi'},
   ];

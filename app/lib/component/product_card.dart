@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 class ProductCard extends StatelessWidget {
   final ProductModel product;
   final VoidCallback onClick;
+  final int maxlines;
 
   const ProductCard({
     super.key,
     required this.product,
     required this.onClick,
+    this.maxlines = 2,
   });
 
   @override
@@ -61,7 +63,7 @@ class ProductCard extends StatelessWidget {
             const SizedBox(height: 8),
             Text(
               product.title,
-              maxLines: 2,
+              maxLines: maxlines,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(fontSize: 14),
             ),
