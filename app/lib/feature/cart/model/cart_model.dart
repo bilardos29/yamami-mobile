@@ -1,5 +1,6 @@
 class CartItem {
   final String store;
+  final String storeImage;
   final String name;
   final String variant;
   final double price;
@@ -10,6 +11,7 @@ class CartItem {
 
   CartItem({
     required this.store,
+    required this.storeImage,
     required this.name,
     required this.variant,
     required this.price,

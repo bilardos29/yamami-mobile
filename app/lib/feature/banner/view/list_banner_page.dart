@@ -15,7 +15,7 @@ class _ListBannerPageState extends State<ListBannerPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: appText('Notification')),
+      appBar: AppBar(title: appText('Semua Banner')),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),

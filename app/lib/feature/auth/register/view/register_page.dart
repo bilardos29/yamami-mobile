@@ -61,7 +61,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   SizedBox(
                     width: double.infinity,
                     child: Text(
-                      'Selamat datang di Yamam Baking App',
+                      'Selamat datang di Yamama Baking App',
                       style: TextStyle(
                         fontWeight: FontWeight.w200,
                         fontSize: 14,

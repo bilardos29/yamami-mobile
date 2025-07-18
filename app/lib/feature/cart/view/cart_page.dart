@@ -13,6 +13,7 @@ class _CartPageState extends State<CartPage> {
   List<CartItem> cartItems = [
     CartItem(
       store: 'Toko Bandung',
+      storeImage: 'img_usr_1.png',
       name: 'GR-BK-0081 Sprinkles sprinkle...',
       variant: 'Kuning | Size 2',
       price: 7500,
@@ -22,6 +23,7 @@ class _CartPageState extends State<CartPage> {
     ),
     CartItem(
       store: 'Toko Bandung',
+      storeImage: 'img_usr_1.png',
       name: 'GR-BK-0081 Sprinkles sprinkle...',
       variant: 'Hitam',
       price: 7500,
@@ -29,6 +31,7 @@ class _CartPageState extends State<CartPage> {
     ),
     CartItem(
       store: 'Toko Jawa',
+      storeImage: 'img_usr_1.png',
       name: 'GR-BK-0081 Sprinkles sprinkle...',
       variant: 'Kuning | Size 2',
       price: 7500,
@@ -120,7 +123,12 @@ class _CartPageState extends State<CartPage> {
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Row(
               children: [
-                Checkbox(value: allSelected, onChanged: toggleSelectAll),
+                Checkbox(
+                  visualDensity: VisualDensity.compact,
+                  value: allSelected,
+                  onChanged: toggleSelectAll,
+                ),
+                SizedBox(width: 4),
                 const Text('Pilih Semua'),
                 const Spacer(),
                 CustomTextButton(text: 'Hapus', onClick: removeSelected),
@@ -145,15 +153,17 @@ class _CartPageState extends State<CartPage> {
                               value: false,
                               onChanged: (val) {},
                             ),
-                            // ClipRRect(
-                            //   borderRadius: BorderRadius.circular(6),
-                            //   child: Image.asset(
-                            //     'asset/images/${item.image}',
-                            //     width: 60,
-                            //     height: 60,
-                            //     fit: BoxFit.cover,
-                            //   ),
-                            // ),
+                            SizedBox(width: 4),
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(30),
+                              child: Image.asset(
+                                'asset/images/img_usr_1.png',
+                                width: 24,
+                                height: 24,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            SizedBox(width: 10),
                             Text(
                               entry.key,
                               style: const TextStyle(
@@ -172,6 +182,7 @@ class _CartPageState extends State<CartPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Checkbox(
+                                  visualDensity: VisualDensity.compact,
                                   value: item.selected,
                                   onChanged: (val) {
                                     setState(() {
@@ -179,6 +190,7 @@ class _CartPageState extends State<CartPage> {
                                     });
                                   },
                                 ),
+                                SizedBox(width: 4),
                                 ClipRRect(
                                   borderRadius: BorderRadius.circular(6),
                                   child: Image.asset(
@@ -242,16 +254,23 @@ class _CartPageState extends State<CartPage> {
                                   child: Row(
                                     children: [
                                       IconButton(
+                                        padding: EdgeInsets.zero,
+                                        visualDensity: VisualDensity.compact,
                                         icon: const Icon(
                                           Icons.remove,
-                                          size: 16,
+                                          size: 12,
                                         ),
                                         onPressed:
                                             () => updateQuantity(index, -1),
                                       ),
-                                      Text(item.quantity.toString()),
+                                      Text(
+                                        item.quantity.toString(),
+                                        style: TextStyle(fontSize: 10),
+                                      ),
                                       IconButton(
-                                        icon: const Icon(Icons.add, size: 16),
+                                        padding: EdgeInsets.zero,
+                                        visualDensity: VisualDensity.compact,
+                                        icon: const Icon(Icons.add, size: 12),
                                         onPressed:
                                             () => updateQuantity(index, 1),
                                       ),

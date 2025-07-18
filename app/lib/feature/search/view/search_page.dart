@@ -1,7 +1,9 @@
+import 'package:app/component/bottom_dialog.dart';
 import 'package:app/component/product_card.dart';
 import 'package:app/feature/cart/view/cart_page.dart';
 import 'package:app/feature/home/model/product_model.dart';
 import 'package:app/feature/product/view/detail_product_page.dart';
+import 'package:app/feature/product/view/filter_page.dart';
 import 'package:app/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -17,8 +19,12 @@ class _SearchPageState extends State<SearchPage> {
   final TextEditingController _searchController = TextEditingController(
     text: "Alat kue",
   );
+  final FocusNode _focusNode = FocusNode();
+  bool isFocused = false;
+  bool isEmpty = false;
 
-  bool isEmpty = false; // Ganti ini untuk uji tampilan kosong / hasil ditemukan
+  List<String> recentSearch = ['Alat kue'];
+  List<String> suggestions = ['Alat Kue', 'Alat Pesta'];
 
   final List<Map<String, dynamic>> productList = [
     {
@@ -42,6 +48,28 @@ class _SearchPageState extends State<SearchPage> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    _focusNode.addListener(() {
+      setState(() {
+        isFocused = _focusNode.hasFocus;
+      });
+      if (_focusNode.hasFocus) {
+        debugPrint("TextField is focused");
+      } else {
+        debugPrint("TextField lost focus");
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -51,7 +79,12 @@ class _SearchPageState extends State<SearchPage> {
         iconTheme: const IconThemeData(color: Colors.black),
       ),
       backgroundColor: Colors.white,
-      body: isEmpty ? _buildEmptyResult() : _buildSearchResults(),
+      body:
+          isEmpty
+              ? _buildEmptyResult()
+              : isFocused
+              ? _searchStack()
+              : _buildSearchResults(),
     );
   }
 
@@ -68,11 +101,14 @@ class _SearchPageState extends State<SearchPage> {
             ),
             child: Row(
               children: [
-                const Icon(Icons.search, color: Colors.grey),
-                const SizedBox(width: 6),
+                if (!isFocused) ...[
+                  const Icon(Icons.search, color: Colors.grey),
+                  const SizedBox(width: 6),
+                ],
                 Expanded(
                   child: TextField(
                     controller: _searchController,
+                    focusNode: _focusNode,
                     decoration: const InputDecoration(
                       hintText: "Cari produk...",
                       border: InputBorder.none,
@@ -81,15 +117,26 @@ class _SearchPageState extends State<SearchPage> {
                     style: const TextStyle(fontSize: 14),
                   ),
                 ),
+                if (isFocused)
+                  GestureDetector(
+                    onTap: () => _searchController.clear(),
+                    child: const Icon(
+                      Icons.close,
+                      size: 20,
+                      color: Colors.grey,
+                    ),
+                  ),
               ],
             ),
           ),
         ),
-        SizedBox(width: 8),
-        buildIconWithBadge(
-          image: 'ic_cart.png',
-          onTap: () => nextPage(context, CartPage()),
-        ),
+        if (!isFocused) ...[
+          SizedBox(width: 8),
+          buildIconWithBadge(
+            image: 'ic_cart.png',
+            onTap: () => nextPage(context, CartPage()),
+          ),
+        ],
       ],
     );
   }
@@ -104,10 +151,26 @@ class _SearchPageState extends State<SearchPage> {
             children: [
               Text('Menampilkan "200" Produk Alat Kue'),
               const Spacer(),
-              IconButton(onPressed: () {}, icon: const Icon(Icons.sort)),
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.filter_alt_outlined),
+              InkWell(
+                onTap: () {
+                  showSortDialog(context);
+                },
+                child: Image.asset(
+                  'asset/icons/ic_sort.png',
+                  width: 38,
+                  height: 38,
+                ),
+              ),
+              SizedBox(width: 4),
+              InkWell(
+                onTap: () {
+                  nextPage(context, FilterPage());
+                },
+                child: Image.asset(
+                  'asset/icons/ic_filter.png',
+                  width: 38,
+                  height: 38,
+                ),
               ),
             ],
           ),
@@ -163,6 +226,40 @@ class _SearchPageState extends State<SearchPage> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _searchStack() {
+    return ListView(
+      padding: EdgeInsets.zero,
+      children: [
+        const Divider(height: 0.8),
+        if (recentSearch.isNotEmpty)
+          ListTile(
+            leading: const Icon(Icons.access_time, size: 20),
+            title: Text(recentSearch[0]),
+            trailing: IconButton(
+              icon: const Icon(Icons.close),
+              onPressed: () {
+                setState(() {
+                  recentSearch.removeAt(0);
+                });
+              },
+            ),
+          ),
+        const Divider(height: 0.8),
+        ...suggestions.map((text) {
+          return Column(
+            children: [
+              ListTile(
+                title: Text(text),
+                onTap: () {},
+              ),
+              const Divider(height: 0.8),
+            ],
+          );
+        }),
+      ],
     );
   }
 }

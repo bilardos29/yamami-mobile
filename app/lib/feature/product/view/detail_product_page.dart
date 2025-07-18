@@ -1,5 +1,7 @@
+import 'package:app/component/bottom_dialog.dart';
 import 'package:app/component/product_card.dart';
 import 'package:app/feature/home/model/product_model.dart';
+import 'package:app/feature/product/view/list_review_page.dart';
 import 'package:app/utils/utils.dart';
 import 'package:flutter/material.dart';
 
@@ -13,6 +15,8 @@ class DetailProductPage extends StatefulWidget {
 }
 
 class _DetailProductPageState extends State<DetailProductPage> {
+  bool isLiked = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -99,7 +103,9 @@ class _DetailProductPageState extends State<DetailProductPage> {
                     children: const [
                       Padding(
                         padding: EdgeInsets.all(8.0),
-                        child: Text('Deskripsi produk di sini...'),
+                        child: Text(
+                          'Lorem ipsum dolor sit amet, conse dipiscing elit, sed do eiusmod tempor incididunt utau labore et dolore magna aliqua.Lorem ipsum dolor sit amet, conse dipiscing elit, sed do eiusmod tempor',
+                        ),
                       ),
                     ],
                   ),
@@ -143,7 +149,7 @@ class _DetailProductPageState extends State<DetailProductPage> {
                   const SizedBox(height: 12),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
+                    children: [
                       Text(
                         "Ulasan",
                         style: TextStyle(
@@ -151,9 +157,14 @@ class _DetailProductPageState extends State<DetailProductPage> {
                           fontSize: 14,
                         ),
                       ),
-                      Text(
-                        "Lihat Semua",
-                        style: TextStyle(color: Color(0xffB4870F)),
+                      InkWell(
+                        onTap: () {
+                          nextPage(context, ListReviewPage());
+                        },
+                        child: Text(
+                          "Lihat Semua",
+                          style: TextStyle(color: Color(0xffB4870F)),
+                        ),
                       ),
                     ],
                   ),
@@ -180,34 +191,62 @@ class _DetailProductPageState extends State<DetailProductPage> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Icon(Icons.favorite_border, color: Colors.grey),
-            const SizedBox(width: 6),
-            Expanded(child: btnBottom('Beli Sekarang', isBorderButton: true)),
-            const SizedBox(width: 6),
-            Expanded(child: btnBottom('+ Keranjang')),
+            InkWell(
+              onTap: () {
+                setState(() {
+                  isLiked = !isLiked;
+                });
+              },
+              child: Icon(
+                isLiked ? Icons.favorite : Icons.favorite_border,
+                color: isLiked ? Colors.red : Colors.grey,
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: btnBottom(
+                'Beli Sekarang',
+                isBorderButton: true,
+                onClick: () => showAddToCartBottomSheet(context, 'Buy'),
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: btnBottom(
+                '+ Keranjang',
+                onClick: () => showAddToCartBottomSheet(context, 'Cart'),
+              ),
+            ),
           ],
         ),
       ),
     );
   }
 
-  Widget btnBottom(String txt, {bool isBorderButton = false}) => Container(
-    height: 44,
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(12),
-      color: isBorderButton ? Colors.white : Color(0xffB4870F),
-      border:
-          !isBorderButton
-              ? null
-              : Border.all(color: Color(0xffB4870F), width: 1),
-    ),
-    alignment: Alignment.center,
-    child: Text(
-      txt,
-      style: TextStyle(
-        color: isBorderButton ? Color(0xffB4870F) : Colors.white,
-        fontSize: 14,
-        fontWeight: FontWeight.bold,
+  Widget btnBottom(
+    String txt, {
+    bool isBorderButton = false,
+    VoidCallback? onClick,
+  }) => InkWell(
+    onTap: onClick,
+    child: Container(
+      height: 44,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        color: isBorderButton ? Colors.white : Color(0xffB4870F),
+        border:
+            !isBorderButton
+                ? null
+                : Border.all(color: Color(0xffB4870F), width: 1),
+      ),
+      alignment: Alignment.center,
+      child: Text(
+        txt,
+        style: TextStyle(
+          color: isBorderButton ? Color(0xffB4870F) : Colors.white,
+          fontSize: 14,
+          fontWeight: FontWeight.bold,
+        ),
       ),
     ),
   );

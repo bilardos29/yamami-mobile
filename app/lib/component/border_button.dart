@@ -23,7 +23,6 @@ class BorderButton extends StatelessWidget {
           style: TextStyle(
             color: Theme.of(context).colorScheme.primary,
             fontSize: 16,
-            fontWeight: FontWeight.bold,
           ),
         ),
       ),

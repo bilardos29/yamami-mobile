@@ -1,3 +1,4 @@
+import 'package:app/component/bottom_dialog.dart';
 import 'package:app/component/custom_text_button.dart';
 import 'package:app/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -75,6 +76,7 @@ class PaymentView extends StatelessWidget {
             Divider(height: 32),
             GestureDetector(
               onTap: () {
+                showPaymentInstructionSheet(context);
               },
               child: Text(
                 "Lihat Cara Pembayaran",

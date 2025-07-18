@@ -1,4 +1,6 @@
+import 'package:app/component/bottom_dialog.dart';
 import 'package:app/component/main_button.dart';
+import 'package:app/feature/auth/login/view/login_page.dart';
 import 'package:app/utils/utils.dart';
 import 'package:flutter/material.dart';
 
@@ -23,10 +25,7 @@ class _ProfileDeleteAkunState extends State<ProfileDeleteAkun> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: appText('Hapus Akun'),
-        centerTitle: true,
-      ),
+      appBar: AppBar(title: appText('Hapus Akun'), centerTitle: true),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16),
         child: Column(
@@ -99,7 +98,18 @@ class _ProfileDeleteAkunState extends State<ProfileDeleteAkun> {
               style: TextStyle(color: Color(0xff271B09), fontSize: 12),
             ),
             const Spacer(),
-            MainButton(text: 'Hapus Akun', onPressed: (){}),
+            MainButton(
+              text: 'Hapus Akun',
+              onPressed: () {
+                showDeleteAccount(
+                  context,
+                  onConfirm: () {
+                    showAppSnackBar(context, message: 'Sukses Menghapus akun');
+                    backToMainPage(context, LoginPage());
+                  },
+                );
+              },
+            ),
             const SizedBox(height: 10),
           ],
         ),
