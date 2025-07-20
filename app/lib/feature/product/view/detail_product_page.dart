@@ -6,6 +6,7 @@ import 'package:app/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 import '../../transaction/view/widgets/review_card.dart';
+import 'list_shop_product_page.dart';
 
 class DetailProductPage extends StatefulWidget {
   const DetailProductPage({super.key});
@@ -140,7 +141,9 @@ class _DetailProductPageState extends State<DetailProductPage> {
                       const Spacer(),
                       SizedBox(
                         width: 120,
-                        child: btnBottom('Kunjungi Toko', isBorderButton: true),
+                        child: btnBottom('Kunjungi Toko', isBorderButton: true, onClick: (){
+                          nextPage(context, ListShopProductPage());
+                        }),
                       ),
                     ],
                   ),

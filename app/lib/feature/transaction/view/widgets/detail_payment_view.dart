@@ -6,10 +6,12 @@ import 'package:flutter/material.dart';
 
 class DetailPaymentView extends StatelessWidget {
   final OrderStatus status;
+  final String metodePembayaran;
 
   const DetailPaymentView({
     super.key,
     required this.status,
+    required this.metodePembayaran,
   });
 
   @override
@@ -26,14 +28,16 @@ class DetailPaymentView extends StatelessWidget {
           Text("Detail Pembayaran",
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                fontSize: 16,
+                fontSize: 14,
                 color: Colors.brown[900],
               )),
-          SizedBox(height: 16),
-          buildRow("Metode Pembayaran", "BCA Virtual Account"),
-          SizedBox(height: 12),
+          SizedBox(height: 14),
+          if(metodePembayaran.isNotEmpty) ...[
+            buildRow("Metode Pembayaran", "$metodePembayaran"),
+            SizedBox(height: 10),
+          ],
           buildRow("Subtotal", "Rp 15.000"),
-          SizedBox(height: 12),
+          SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -53,13 +57,13 @@ class DetailPaymentView extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 12),
+          SizedBox(height: 10),
           buildRow("Biaya Layanan", "Rp 0"),
-          SizedBox(height: 12),
+          SizedBox(height: 10),
           buildRow("Diskon", "- Rp 0"),
-          SizedBox(height: 12),
+          SizedBox(height: 10),
           buildRow("Potongan Poin", "- Rp 2.000"),
-          SizedBox(height: 20),
+          SizedBox(height: 10),
           Divider(),
           SizedBox(height: 10),
           Row(
@@ -76,7 +80,7 @@ class DetailPaymentView extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
-                  color: Colors.amber[800],
+                  color: Color(0xffB4870F),
                 ),
               ),
             ],

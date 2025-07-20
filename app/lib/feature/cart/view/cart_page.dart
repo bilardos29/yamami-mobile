@@ -1,6 +1,7 @@
 import 'package:app/component/custom_text_button.dart';
 import 'package:app/component/main_button.dart';
 import 'package:app/feature/cart/model/cart_model.dart';
+import 'package:app/feature/cart/view/checkout_page.dart';
 import 'package:app/utils/utils.dart';
 import 'package:flutter/material.dart';
 
@@ -111,7 +112,9 @@ class _CartPageState extends State<CartPage> {
               const Spacer(),
               SizedBox(
                 width: 140,
-                child: MainButton(text: 'Bayar', onPressed: () {}),
+                child: MainButton(text: 'Bayar', onPressed: () {
+                  nextPage(context, CheckoutPage());
+                }),
               ),
             ],
           ),

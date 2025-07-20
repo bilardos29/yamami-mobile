@@ -5,7 +5,9 @@ import 'package:app/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 class FilterPage extends StatefulWidget {
-  const FilterPage({super.key});
+  final ValueChanged<String> onChanged;
+
+  const FilterPage({required this.onChanged, super.key});
 
   @override
   State<FilterPage> createState() => _FilterPageState();
@@ -102,7 +104,7 @@ class _FilterPageState extends State<FilterPage> {
                       onTap: () {
                         setState(() {
                           selectedCategoryIndex = itemIndex;
-                          if(selectedCategoryIndex == 1){
+                          if (selectedCategoryIndex == 1) {
                             nextPage(context, FilterKategoriPage());
                           }
                         });
@@ -168,7 +170,16 @@ class _FilterPageState extends State<FilterPage> {
                 Expanded(
                   child: MainButton(
                     text: 'Terapkan',
-                    onPressed: () => Navigator.pop(context),
+                    onPressed: () {
+                      if (selectedCategoryIndex != 0 ||
+                          selectedLocationIndex != 0 ||
+                          minPriceController.text.toString().isNotEmpty ||
+                          minPriceController.text.toString().isNotEmpty){
+                        widget.onChanged('ada');
+                      } else
+                        widget.onChanged('kosong');
+                      Navigator.pop(context);
+                    },
                   ),
                 ),
               ],

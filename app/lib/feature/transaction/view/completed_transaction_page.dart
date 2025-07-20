@@ -148,7 +148,10 @@ class _CompletedTransactionPageState extends State<CompletedTransactionPage> {
                           borderRadius: BorderRadius.circular(4),
                         ),
                       ),
-                      child: const Text("Beli Lagi",style: TextStyle(color: Colors.white),),
+                      child: const Text(
+                        "Beli Lagi",
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
                   ],
                 ),
@@ -178,7 +181,10 @@ class _CompletedTransactionPageState extends State<CompletedTransactionPage> {
               ],
             ),
           ),
-          DetailPaymentView(status: OrderStatus.done),
+          DetailPaymentView(
+            status: OrderStatus.done,
+            metodePembayaran: 'BCA Virtual Account',
+          ),
         ],
       ),
     );

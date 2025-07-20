@@ -1,7 +1,10 @@
 import 'package:app/component/add_cart_bottom_dialog.dart';
 import 'package:app/component/delete_account_bottom.dart';
 import 'package:app/component/lihat_pembayaran_bottom_dialog.dart';
+import 'package:app/component/payment_method_bottom.dart';
+import 'package:app/component/promo_bottom.dart';
 import 'package:app/component/sort_bottom_dialog.dart';
+import 'package:app/component/tambah_catatan_bottom.dart';
 import 'package:flutter/material.dart';
 
 void showSortDialog(BuildContext context) {
@@ -67,4 +70,42 @@ void showDeleteAccount(BuildContext context, {VoidCallback? onConfirm}) {
   );
 }
 
+void showPaymentMethod(
+  BuildContext context,
+  String selected, {
+  ValueChanged<String>? onSelect,
+}) {
+  showPaymentMethodBottomSheet(
+    context: context,
+    selectedBank: selected,
+    onSelected: (val) {
+      onSelect!(val);
+    },
+  );
+}
 
+void showPromoBottomSheet(BuildContext context) {
+  showModalBottomSheet(
+    context: context,
+    isScrollControlled: true,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+    ),
+    builder: (context) => const PromoBottom(),
+  );
+}
+
+void showNoteBottomSheet(
+  BuildContext context,
+  String note, {
+  ValueChanged<String>? onChanged,
+}) {
+  showModalBottomSheet(
+    context: context,
+    isScrollControlled: true,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+    ),
+    builder: (_) => NoteBottom(note: note, onChanged: onChanged!),
+  );
+}

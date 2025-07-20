@@ -46,7 +46,7 @@ class _ProfilePageState extends State<ProfilePage> {
               nextPage(context, NotificationPage());
             },
           ),
-          SizedBox(width: 10),
+          SizedBox(width: 12),
           buildIconWithBadge(
             image: 'ic_cart.png',
             onTap: () {

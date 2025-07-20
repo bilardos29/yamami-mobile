@@ -73,7 +73,10 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
           ],
           ProductView(status: widget.status),
           const SizedBox(height: 12),
-          DetailPaymentView(status: widget.status),
+          DetailPaymentView(
+            status: widget.status,
+            metodePembayaran: 'BCA Virtual Account',
+          ),
           if (widget.status == OrderStatus.waitingPayment) ...[
             const SizedBox(height: 12),
             AddressView(

@@ -20,8 +20,9 @@ class _SearchPageState extends State<SearchPage> {
     text: "Alat kue",
   );
   final FocusNode _focusNode = FocusNode();
-  bool isFocused = false;
+  bool isFocused = true;
   bool isEmpty = false;
+  bool filtered = false;
 
   List<String> recentSearch = ['Alat kue'];
   List<String> suggestions = ['Alat Kue', 'Alat Pesta'];
@@ -164,10 +165,19 @@ class _SearchPageState extends State<SearchPage> {
               SizedBox(width: 4),
               InkWell(
                 onTap: () {
-                  nextPage(context, FilterPage());
+                  nextPage(
+                    context,
+                    FilterPage(
+                      onChanged: (val) {
+                        setState(() {
+                          filtered = val == 'ada' ? true : false;
+                        });
+                      },
+                    ),
+                  );
                 },
                 child: Image.asset(
-                  'asset/icons/ic_filter.png',
+                  'asset/icons/${filtered ? 'ic_filter_selected.png' : 'ic_filter.png'}',
                   width: 38,
                   height: 38,
                 ),
@@ -237,7 +247,15 @@ class _SearchPageState extends State<SearchPage> {
         if (recentSearch.isNotEmpty)
           ListTile(
             leading: const Icon(Icons.access_time, size: 20),
-            title: Text(recentSearch[0]),
+            title: InkWell(
+              onTap: () {
+                setState(() {
+                  isFocused = false;
+                  FocusScope.of(context).unfocus();
+                });
+              },
+              child: Text(recentSearch[0]),
+            ),
             trailing: IconButton(
               icon: const Icon(Icons.close),
               onPressed: () {
@@ -253,7 +271,12 @@ class _SearchPageState extends State<SearchPage> {
             children: [
               ListTile(
                 title: Text(text),
-                onTap: () {},
+                onTap: () {
+                  setState(() {
+                    isFocused = false;
+                    FocusScope.of(context).unfocus();
+                  });
+                },
               ),
               const Divider(height: 0.8),
             ],
