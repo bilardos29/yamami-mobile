@@ -17,22 +17,22 @@ class UserModel {
   String? deletedAt;
 
   UserModel({
-    token,
-    expiredAt,
-    id,
-    code,
-    firstname,
-    lastname,
-    phoneNumber,
-    email,
-    gender,
-    dob,
-    profilePicture,
-    totalPoint,
-    totalRedeem,
-    createdAt,
-    updatedAt,
-    deletedAt,
+    this.token,
+    this.expiredAt,
+    this.id,
+    this.code,
+    this.firstname,
+    this.lastname,
+    this.phoneNumber,
+    this.email,
+    this.gender,
+    this.dob,
+    this.profilePicture,
+    this.totalPoint,
+    this.totalRedeem,
+    this.createdAt,
+    this.updatedAt,
+    this.deletedAt,
   });
 
   UserModel.fromJson(Map<String, dynamic> json) {

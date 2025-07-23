@@ -4,6 +4,7 @@ import 'package:app/feature/auth/login/view/login_page.dart';
 import 'package:app/feature/cart/view/cart_page.dart';
 import 'package:app/feature/loyalty/view/loyalty_page.dart';
 import 'package:app/feature/notification/view/notification_page.dart';
+import 'package:app/feature/profile/contoller/profile_controller.dart';
 import 'package:app/feature/profile/view/change_profile_page.dart';
 import 'package:app/feature/profile/view/profile_change_password_page.dart';
 import 'package:app/feature/profile/view/profile_delete_akun.dart';
@@ -13,6 +14,7 @@ import 'package:app/feature/profile/view/profile_privacy_policy_page.dart';
 import 'package:app/feature/profile/view/profile_terms_conditions_page.dart';
 import 'package:app/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -34,6 +36,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    final ctrl = context.read<ProfileController>();
+
     return Scaffold(
       backgroundColor: const Color(0xFFF9F6F1),
       appBar: AppBar(
@@ -65,9 +69,9 @@ class _ProfilePageState extends State<ProfilePage> {
                 children: [
                   Expanded(
                     child: UserGreeting(
-                      userName: 'Kate',
-                      imageUrl: 'https://i.pravatar.cc/150?img=5',
-                      email: 'Kate@gmail.com',
+                      userName: ctrl.user?.firstname ?? '',
+                      imageUrl: ctrl.user?.profilePicture,
+                      email: ctrl.user?.email ?? '',
                       isLargeImage: true,
                     ),
                   ),
@@ -100,7 +104,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                           SizedBox(width: 4),
                           Text(
-                            '2.000',
+                            '${int.parse(ctrl.user?.totalPoint ?? '0')}',
                             style: TextStyle(fontWeight: FontWeight.w600),
                           ),
                         ],
@@ -170,7 +174,9 @@ class _ProfilePageState extends State<ProfilePage> {
                         alignment: Alignment.topLeft,
                         child: TextButton(
                           onPressed: () {
-                            backToMainPage(context, LoginPage());
+                            ctrl.logout((){
+                              backToMainPage(context, LoginPage());
+                            });
                           },
                           child: const Text(
                             'Keluar',

@@ -4,12 +4,15 @@ import 'package:app/feature/auth/register/controller/register_controller.dart';
 import 'package:app/feature/home/view/home_page.dart';
 import 'package:app/feature/profile/contoller/profile_controller.dart';
 import 'package:app/feature/splash/view/splash_page.dart';
+import 'package:app/utils/local_storage.dart';
 import 'package:app/utils/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await LocalStorage.init();
   runApp(const MyApp());
 }
 

@@ -1,4 +1,6 @@
 import 'package:app/feature/profile/data/user_model.dart';
+import 'package:app/utils/local_storage.dart';
+import 'package:app/utils/local_storage_key.dart';
 import 'package:flutter/cupertino.dart';
 
 class ProfileController extends ChangeNotifier {
@@ -9,5 +11,12 @@ class ProfileController extends ChangeNotifier {
   set user(UserModel? newUser) {
     _user = newUser;
     notifyListeners();
+  }
+
+  void logout(Function onSuccess) {
+    _user = null;
+    LocalStorage.setString(LocalStorageKey.token, '');
+    LocalStorage.setString(LocalStorageKey.rememberMe, 'false');
+    onSuccess();
   }
 }

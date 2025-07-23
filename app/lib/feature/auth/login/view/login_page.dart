@@ -124,7 +124,7 @@ class _LoginPageState extends State<LoginPage> {
                         _pass.text,
                         isRememberMe,
                         onSuccess: (val) {
-                          context.watch<ProfileController>().user = val;
+                          context.read<ProfileController>().user = val;
                           backToMainPage(context, HomePage());
                         },
                         onErr: (err) {

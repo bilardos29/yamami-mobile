@@ -65,12 +65,14 @@ class _DashboardPageState extends State<DashboardPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    UserGreeting(
-                      userName: 'Kate',
-                      imageUrl: 'https://i.pravatar.cc/150?img=5',
+                    Expanded(
+                      child: UserGreeting(
+                        userName: ctrl.user?.firstname ?? '',
+                        imageUrl: ctrl.user?.profilePicture,
+                      ),
                     ),
                     PointBadge(
-                      point: 2000,
+                      point: int.parse(ctrl.user?.totalPoint ?? '0'),
                       onClick: () {
                         nextPage(context, LoyaltyPage());
                       },
