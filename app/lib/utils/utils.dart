@@ -45,6 +45,38 @@ showAppSnackBar(
   ScaffoldMessenger.of(context).showSnackBar(snackBar);
 }
 
+Future<void> showYesNoDialog(BuildContext context, {
+  required String title,
+  required String message,
+  required VoidCallback onYes,
+  VoidCallback? onNo,
+}) async {
+  return showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: Text(title),
+      content: Text(message),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+            if (onNo != null) onNo();
+          },
+          child: const Text('Tidak'),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+            onYes();
+          },
+          child: const Text('Iya'),
+        ),
+      ],
+    ),
+  );
+}
+
+
 Widget emptyState(
   VoidCallback onMulaiBelanja, {
   String? title,

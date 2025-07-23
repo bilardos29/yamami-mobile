@@ -13,10 +13,12 @@ import 'package:app/feature/home/view/header_menu.dart';
 import 'package:app/feature/loyalty/view/loyalty_page.dart';
 import 'package:app/feature/notification/view/notification_page.dart';
 import 'package:app/feature/product/view/detail_product_page.dart';
+import 'package:app/feature/profile/contoller/profile_controller.dart';
 import 'package:app/feature/search/view/search_page.dart';
 import 'package:app/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:provider/provider.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -44,6 +46,7 @@ class _DashboardPageState extends State<DashboardPage> {
 
   @override
   Widget build(BuildContext context) {
+    final ctrl = context.read<ProfileController>();
     return ListView(
       children: [
         Padding(
@@ -58,22 +61,24 @@ class _DashboardPageState extends State<DashboardPage> {
                 onSearch: () => nextPage(context, SearchPage()),
               ),
               SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  UserGreeting(
-                    userName: 'Kate',
-                    imageUrl: 'https://i.pravatar.cc/150?img=5',
-                  ),
-                  PointBadge(
-                    point: 2000,
-                    onClick: () {
-                      nextPage(context, LoyaltyPage());
-                    },
-                  ),
-                ],
-              ),
-              SizedBox(height: 20),
+              if(ctrl.user != null) ...[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    UserGreeting(
+                      userName: 'Kate',
+                      imageUrl: 'https://i.pravatar.cc/150?img=5',
+                    ),
+                    PointBadge(
+                      point: 2000,
+                      onClick: () {
+                        nextPage(context, LoyaltyPage());
+                      },
+                    ),
+                  ],
+                ),
+                SizedBox(height: 20),
+              ],
               PromoBanner(
                 images: images,
                 currentIndex: 2,

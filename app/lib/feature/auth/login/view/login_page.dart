@@ -5,6 +5,7 @@ import 'package:app/feature/auth/forgot_password/view/forgot_password_page.dart'
 import 'package:app/feature/auth/login/controller/login_controller.dart';
 import 'package:app/feature/auth/register/view/register_page.dart';
 import 'package:app/feature/home/view/home_page.dart';
+import 'package:app/feature/profile/contoller/profile_controller.dart';
 import 'package:app/utils/asset_path.dart';
 import 'package:app/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -122,7 +123,8 @@ class _LoginPageState extends State<LoginPage> {
                         _email.text,
                         _pass.text,
                         isRememberMe,
-                        () {
+                        onSuccess: (val) {
+                          context.watch<ProfileController>().user = val;
                           backToMainPage(context, HomePage());
                         },
                         onErr: (err) {

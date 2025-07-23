@@ -1,4 +1,8 @@
+import 'package:app/feature/auth/login/view/login_page.dart';
+import 'package:app/feature/profile/contoller/profile_controller.dart';
+import 'package:app/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class BottomMenu extends StatelessWidget {
   final int menu;
@@ -8,6 +12,7 @@ class BottomMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ctrl = context.read<ProfileController>();
     return Container(
       height: 48,
       decoration: BoxDecoration(
@@ -45,7 +50,24 @@ class BottomMenu extends StatelessWidget {
             imageSelected: 'ic_profil_selected.png',
             text: 'Profile',
             isSelected: menu == 3,
-            onClick: () => onChanged(3),
+            onClick: () {
+              if(ctrl.user != null){
+                onChanged(3);
+              } else {
+                showYesNoDialog(
+                  context,
+                  title: 'Konfirmasi',
+                  message: 'Anda belum login, Apakah anda ingin login terlebih dahulu?',
+                  onYes: () {
+                    backToMainPage(context, LoginPage());
+                  },
+                  onNo: () {
+                  },
+                );
+
+              }
+
+            },
           ),
         ],
       ),

@@ -14,7 +14,7 @@ class LoginController extends ChangeNotifier with Api {
 
   UserModel? get user => _user;
 
-  Future<void> login(String user, String pwd, bool isRememberMe, Function onClick, {ValueChanged<String>? onErr}) async {
+  Future<void> login(String user, String pwd, bool isRememberMe, {ValueChanged<String>? onErr, ValueChanged<UserModel>? onSuccess}) async {
     String inputType = detectInputType(user);
     if(user.isEmpty){
       onErr!('No Telp/Email tidak boleh kosong');
@@ -37,7 +37,7 @@ class LoginController extends ChangeNotifier with Api {
           final loginData = UserModel.fromJson(response.data);
           LocalStorage.setString(LocalStorageKey.token, loginData.token!);
           LocalStorage.setString(LocalStorageKey.rememberMe, '$isRememberMe');
-          onClick();
+          onSuccess!(loginData);
         } else {
           onErr!(response.message ?? '');
         }
