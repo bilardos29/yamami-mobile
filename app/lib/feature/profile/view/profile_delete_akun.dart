@@ -104,7 +104,10 @@ class _ProfileDeleteAkunState extends State<ProfileDeleteAkun> {
                 showDeleteAccount(
                   context,
                   onConfirm: () {
-                    showAppSnackBar(context, message: 'Sukses Menghapus akun');
+                    showAppSnackBar(
+                      context,
+                      message: 'Sukses Menghapus akun'
+                    );
                     backToMainPage(context, LoginPage());
                   },
                 );

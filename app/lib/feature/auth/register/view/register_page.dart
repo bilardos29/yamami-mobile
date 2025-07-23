@@ -24,18 +24,21 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomSheet: Container(
-        height: 64,
-        color: Colors.white,
-        margin: EdgeInsets.only(bottom: 16),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('Sudah memiliki akun'),
-            CustomTextButton(text: ' Masuk di sini', onClick: () {
-              backToMainPage(context, LoginPage());
-            }),
-          ],
+      bottomNavigationBar: SafeArea(
+        top: false,
+        child: Container(
+          height: 64,
+          color: Colors.white,
+          margin: const EdgeInsets.only(bottom: 6),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text('Sudah memiliki akun'),
+              CustomTextButton(text: ' Masuk di sini', onClick: () {
+                backToMainPage(context, LoginPage());
+              }),
+            ],
+          ),
         ),
       ),
       body: SafeArea(

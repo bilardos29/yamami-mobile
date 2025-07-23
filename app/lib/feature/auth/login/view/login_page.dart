@@ -2,11 +2,13 @@ import 'package:app/component/custom_text_button.dart';
 import 'package:app/component/custom_text_field.dart';
 import 'package:app/component/main_button.dart';
 import 'package:app/feature/auth/forgot_password/view/forgot_password_page.dart';
+import 'package:app/feature/auth/login/controller/login_controller.dart';
 import 'package:app/feature/auth/register/view/register_page.dart';
 import 'package:app/feature/home/view/home_page.dart';
 import 'package:app/utils/asset_path.dart';
 import 'package:app/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -19,21 +21,31 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _email = TextEditingController();
   final TextEditingController _pass = TextEditingController();
 
+  bool isRememberMe = false;
+
   @override
   Widget build(BuildContext context) {
+    final ctrl = context.watch<LoginController>();
+
     return Scaffold(
-      bottomSheet: Container(
-        height: 64,
-        color: Colors.white,
-        margin: EdgeInsets.only(bottom: 12),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('Belum punya akun?'),
-            CustomTextButton(text: ' Daftar di sini', onClick: () {
-              nextPage(context, RegisterPage());
-            }),
-          ],
+      bottomNavigationBar: SafeArea(
+        top: false,
+        child: Container(
+          height: 64,
+          color: Colors.white,
+          margin: const EdgeInsets.only(bottom: 12),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text('Belum punya akun?'),
+              CustomTextButton(
+                text: ' Daftar di sini',
+                onClick: () {
+                  nextPage(context, RegisterPage());
+                },
+              ),
+            ],
+          ),
         ),
       ),
       body: SafeArea(
@@ -76,11 +88,24 @@ class _LoginPageState extends State<LoginPage> {
                     controller: _pass,
                     isPassword: true,
                   ),
-                  SizedBox(height: 24),
+                  SizedBox(height: 10),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Ingat Saya'),
+                      Row(
+                        children: [
+                          Checkbox(
+                            visualDensity: VisualDensity.compact,
+                            value: isRememberMe,
+                            onChanged: (val) {
+                              setState(() {
+                                isRememberMe = val ?? false;
+                              });
+                            },
+                          ),
+                          Text('Ingat Saya'),
+                        ],
+                      ),
                       CustomTextButton(
                         text: 'Lupa kata sandi?',
                         onClick: () {
@@ -90,13 +115,31 @@ class _LoginPageState extends State<LoginPage> {
                     ],
                   ),
                   SizedBox(height: 30),
-                  MainButton(text: 'Masuk', onPressed: () {
-                    backToMainPage(context, HomePage());
-                  }),
+                  MainButton(
+                    text: 'Masuk',
+                    onPressed: () {
+                      ctrl.login(
+                        _email.text,
+                        _pass.text,
+                        isRememberMe,
+                        () {
+                          backToMainPage(context, HomePage());
+                        },
+                        onErr: (err) {
+                          showAppSnackBar(context, message: err);
+                        },
+                      );
+                    },
+                  ),
                   SizedBox(height: 20),
-                  CustomTextButton(text: 'Lewati', onClick: () {
-                    backToMainPage(context, HomePage());
-                  }),
+                  CustomTextButton(
+                    text: 'Lewati',
+                    onClick: () {
+                      ctrl.lewatiFunc(() {
+                        backToMainPage(context, HomePage());
+                      });
+                    },
+                  ),
                   SizedBox(height: 40),
                 ],
               ),

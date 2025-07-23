@@ -123,3 +123,16 @@ Widget appText(String txt) => Text(
     fontWeight: FontWeight.bold,
   ),
 );
+
+String detectInputType(String input) {
+  final emailRegex = RegExp(r"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
+  final phoneRegex = RegExp(r"^\+?\d{9,15}$");
+
+  if (emailRegex.hasMatch(input)) {
+    return 'email';
+  } else if (phoneRegex.hasMatch(input)) {
+    return 'phone_number';
+  } else {
+    return '';
+  }
+}

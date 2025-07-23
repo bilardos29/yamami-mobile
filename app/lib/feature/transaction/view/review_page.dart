@@ -26,23 +26,28 @@ class ReviewPage extends StatelessWidget {
       appBar: AppBar(
         title: appText('Ulasan'),
       ),
-      body: ListView.builder(
-        padding: const EdgeInsets.all(16),
-        itemCount: products.length,
-        itemBuilder: (context, index) {
-          final product = products[index];
-          return ReviewCard(
-            imageUrl: product["image"]!,
-            productName: product["name"]!,
-            variant: product["variant"]!,
-          );
-        },
+      body: SafeArea(
+        child: ListView.builder(
+          padding: const EdgeInsets.all(16),
+          itemCount: products.length,
+          itemBuilder: (context, index) {
+            final product = products[index];
+            return ReviewCard(
+              imageUrl: product["image"]!,
+              productName: product["name"]!,
+              variant: product["variant"]!,
+            );
+          },
+        ),
       ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(16),
-        child: MainButton(text: 'Kirim', onPressed: (){
-          nextPage(context, CompletedTransactionPage());
-        }),
+      bottomNavigationBar: SafeArea(
+        top: false,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          child: MainButton(text: 'Kirim', onPressed: (){
+            nextPage(context, CompletedTransactionPage());
+          }),
+        ),
       ),
     );
   }

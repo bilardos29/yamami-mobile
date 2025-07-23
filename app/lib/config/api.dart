@@ -8,7 +8,7 @@ import 'package:http/http.dart';
 
 part 'api_path.dart';
 
-class Api {
+mixin Api {
   Client http = Client();
 
   Future<Response> get(String url, {Map<String, dynamic>? params}) async {
@@ -148,12 +148,15 @@ class Api {
 
   Uri _uriHandler(String url, Map<String, dynamic>? params) {
     final dev = envMode == "development";
+    final scheme = dev ? Environment.schemaDev : Environment.schemaProd;
+    final host = dev ? Environment.hostDev : Environment.hostProd;
     final path = dev ? Environment.pathDev : Environment.pathProd;
-    print('$dev Environment.hostProd $path');
+
+    print('print $scheme $host $path');
     return Uri(
-      scheme: dev ? Environment.schemaDev : Environment.schemaProd,
-      host: dev ? Environment.hostDev : Environment.hostProd,
-      path: "$path/$url",
+      scheme: scheme,
+      host: host,
+      path: '$path/$url',
       queryParameters: params,
     );
   }
