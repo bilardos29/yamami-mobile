@@ -37,6 +37,7 @@ class LoginController extends ChangeNotifier with Api {
           final loginData = UserModel.fromJson(response.data);
           LocalStorage.setString(LocalStorageKey.token, loginData.token!);
           LocalStorage.setString(LocalStorageKey.rememberMe, '$isRememberMe');
+          LocalStorage.setString(LocalStorageKey.user, loginData.toStringPref());
           onSuccess!(loginData);
         } else {
           onErr!(response.message ?? '');

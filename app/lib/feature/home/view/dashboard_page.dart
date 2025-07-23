@@ -8,6 +8,7 @@ import 'package:app/component/user_greeting.dart';
 import 'package:app/feature/banner/view/banner_detail_page.dart';
 import 'package:app/feature/banner/view/list_banner_page.dart';
 import 'package:app/feature/cart/view/cart_page.dart';
+import 'package:app/feature/home/controller/home_controller.dart';
 import 'package:app/feature/home/model/product_model.dart';
 import 'package:app/feature/home/view/header_menu.dart';
 import 'package:app/feature/loyalty/view/loyalty_page.dart';
@@ -44,9 +45,23 @@ class _DashboardPageState extends State<DashboardPage> {
     'banner_4.png',
   ];
 
+  void initState() {
+    super.initState();
+    fetchUser();
+  }
+
+  void fetchUser() async {
+    final ctrl = context.read<ProfileController>();
+    final homeCtrl = context.read<HomeController>();
+
+    final user = await homeCtrl.getUser();
+    setState(() {
+      ctrl.user = user;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    final ctrl = context.read<ProfileController>();
     return ListView(
       children: [
         Padding(
@@ -61,26 +76,37 @@ class _DashboardPageState extends State<DashboardPage> {
                 onSearch: () => nextPage(context, SearchPage()),
               ),
               SizedBox(height: 20),
-              if(ctrl.user != null) ...[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: UserGreeting(
-                        userName: ctrl.user?.firstname ?? '',
-                        imageUrl: ctrl.user?.profilePicture,
-                      ),
-                    ),
-                    PointBadge(
-                      point: int.parse(ctrl.user?.totalPoint ?? '0'),
-                      onClick: () {
-                        nextPage(context, LoyaltyPage());
-                      },
-                    ),
-                  ],
-                ),
-                SizedBox(height: 20),
-              ],
+              Consumer<ProfileController>(
+                builder: (context, ProfileCtrl, _) {
+                  String point = ProfileCtrl.user?.totalPoint == 'null' ? '0' : '${ProfileCtrl.user?.totalPoint}';
+
+                  print('test ${ProfileCtrl.user?.profilePicture}');
+                  return ProfileCtrl.user != null
+                      ? Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: UserGreeting(
+                                  userName: ProfileCtrl.user?.firstname ?? '',
+                                  imageUrl: ProfileCtrl.user?.profilePicture == 'null' ? null : ProfileCtrl.user?.profilePicture,
+                                ),
+                              ),
+                              PointBadge(
+                                point: int.parse(point),
+                                onClick: () {
+                                  nextPage(context, LoyaltyPage());
+                                },
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 20),
+                        ],
+                      )
+                      : SizedBox();
+                },
+              ),
               PromoBanner(
                 images: images,
                 currentIndex: 2,

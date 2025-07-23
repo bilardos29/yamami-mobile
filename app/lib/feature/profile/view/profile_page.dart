@@ -38,6 +38,9 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     final ctrl = context.read<ProfileController>();
 
+    String point = ctrl.user?.totalPoint == 'null' ? '0' : '${ctrl.user?.totalPoint}';
+    String img = ctrl.user?.profilePicture == 'null' ? '' : '${ctrl.user?.profilePicture}';
+
     return Scaffold(
       backgroundColor: const Color(0xFFF9F6F1),
       appBar: AppBar(
@@ -70,7 +73,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   Expanded(
                     child: UserGreeting(
                       userName: ctrl.user?.firstname ?? '',
-                      imageUrl: ctrl.user?.profilePicture,
+                      imageUrl: img,
                       email: ctrl.user?.email ?? '',
                       isLargeImage: true,
                     ),
@@ -104,7 +107,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                           SizedBox(width: 4),
                           Text(
-                            '${int.parse(ctrl.user?.totalPoint ?? '0')}',
+                            '${int.parse(point)}',
                             style: TextStyle(fontWeight: FontWeight.w600),
                           ),
                         ],

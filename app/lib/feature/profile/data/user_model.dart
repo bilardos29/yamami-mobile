@@ -74,4 +74,26 @@ class UserModel {
     data['deleted_at'] = deletedAt;
     return data;
   }
+
+  String toStringPref() {
+    String value =
+          '{\"token\": \"$token\", '
+        '\"id\": \"$id\",'
+        '\"code\": \"$code\",'
+        '\"firstname\": \"$firstname\",'
+        '\"lastname\": \"$lastname\",'
+        '\"phone_number\": \"$phoneNumber\",'
+        '\"email\": \"$email\",'
+        '\"gender\": \"$gender\",'
+        '\"dob\": \"$dob\",'
+        '\"profile_picture\": \"$profilePicture\",'
+        '\"total_point\": \"$totalPoint\",'
+        '\"total_redeem\": \"$totalRedeem\",'
+        '\"expiredAt\": \"$expiredAt\",'
+        '\"created_at\": \"$createdAt\",'
+        '\"updated_at\": \"$updatedAt\",'
+        '\"deleted_at\": \"$deletedAt\"}';
+
+    return value;
+  }
 }

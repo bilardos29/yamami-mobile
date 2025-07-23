@@ -168,3 +168,23 @@ String detectInputType(String input) {
     return '';
   }
 }
+
+Map<String, String> splitName(String fullName) {
+  final parts = fullName.trim().split(RegExp(r'\s+'));
+
+  if (parts.isEmpty) {
+    return {'firstname': '', 'lastname': ''};
+  }
+
+  if (parts.length == 1) {
+    return {'firstname': parts[0], 'lastname': ''};
+  }
+
+  final firstname = parts.first;
+  final lastname = parts.sublist(1).join(' ');
+
+  return {
+    'firstname': firstname,
+    'lastname': lastname,
+  };
+}

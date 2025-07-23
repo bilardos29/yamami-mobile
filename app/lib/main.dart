@@ -1,6 +1,7 @@
 import 'package:app/feature/auth/login/controller/login_controller.dart';
 import 'package:app/feature/auth/login/view/login_page.dart';
 import 'package:app/feature/auth/register/controller/register_controller.dart';
+import 'package:app/feature/home/controller/home_controller.dart';
 import 'package:app/feature/home/view/home_page.dart';
 import 'package:app/feature/profile/contoller/profile_controller.dart';
 import 'package:app/feature/splash/view/splash_page.dart';
@@ -45,6 +46,9 @@ class _MyAppState extends State<MyApp> {
         ),
         ChangeNotifierProvider(
           create: (context) => ProfileController(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => HomeController(),
         ),
       ],
       child: MaterialApp(

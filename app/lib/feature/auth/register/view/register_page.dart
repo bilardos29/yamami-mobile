@@ -4,8 +4,10 @@ import 'package:app/component/custom_text_field.dart';
 import 'package:app/component/main_button.dart';
 import 'package:app/feature/auth/login/view/login_page.dart';
 import 'package:app/feature/auth/otp/view/otp_page.dart';
+import 'package:app/feature/auth/register/controller/register_controller.dart';
 import 'package:app/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -23,6 +25,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
+    final ctrl = context.read<RegisterController>();
     return Scaffold(
       bottomNavigationBar: SafeArea(
         top: false,
@@ -34,9 +37,12 @@ class _RegisterPageState extends State<RegisterPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Text('Sudah memiliki akun'),
-              CustomTextButton(text: ' Masuk di sini', onClick: () {
-                backToMainPage(context, LoginPage());
-              }),
+              CustomTextButton(
+                text: ' Masuk di sini',
+                onClick: () {
+                  backToMainPage(context, LoginPage());
+                },
+              ),
             ],
           ),
         ),
@@ -93,10 +99,26 @@ class _RegisterPageState extends State<RegisterPage> {
                   SizedBox(height: 24),
                   AgreementText(onTermsTap: () {}, onPrivacyTap: () {}),
                   SizedBox(height: 30),
-                  MainButton(text: 'Daftar', onPressed: () {
-                    nextPage(context, OtpPage());
-                  }),
-                  SizedBox(height: 120),
+                  MainButton(
+                    text: 'Daftar',
+                    onPressed: () {
+                      ctrl.register(
+                        _nama.text,
+                        _notelp.text,
+                        _email.text,
+                        _pass.text,
+                        _repass.text,
+                        onErr: (err) {
+                          showAppSnackBar(context, message: err);
+                        },
+                        onSuccess: (val) {
+                          showAppSnackBar(context, message: val);
+                          nextPage(context, OtpPage());
+                        },
+                      );
+                    },
+                  ),
+                  SizedBox(height: 10),
                 ],
               ),
             ),
@@ -105,6 +127,4 @@ class _RegisterPageState extends State<RegisterPage> {
       ),
     );
   }
-
-
 }

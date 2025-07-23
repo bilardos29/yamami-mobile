@@ -31,7 +31,7 @@ class UserGreeting extends StatelessWidget {
             radius: isLargeImage ? 32 : 22,
             backgroundColor: Colors.black12,
             backgroundImage:
-                imageUrl == null
+                imageUrl == null || imageUrl!.isEmpty
                     ? AssetImage('asset/images/user.png')
                     : NetworkImage(imageUrl!),
           ),
