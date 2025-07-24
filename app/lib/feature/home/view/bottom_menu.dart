@@ -31,6 +31,7 @@ class BottomMenu extends StatelessWidget {
             isSelected: menu == 0,
             onClick: () => onChanged(0),
           ),
+          SizedBox(width: 8),
           MenuIcon(
             image: 'ic_wishlist.png',
             imageSelected: 'ic_wishlist_selected.png',
@@ -38,6 +39,7 @@ class BottomMenu extends StatelessWidget {
             isSelected: menu == 1,
             onClick: () => onChanged(1),
           ),
+          SizedBox(width: 8),
           MenuIcon(
             image: 'ic_transaksi.png',
             imageSelected: 'ic_transaksi_selected.png',
@@ -45,13 +47,14 @@ class BottomMenu extends StatelessWidget {
             isSelected: menu == 2,
             onClick: () => onChanged(2),
           ),
+          SizedBox(width: 8),
           MenuIcon(
             image: 'ic_profile.png',
             imageSelected: 'ic_profil_selected.png',
             text: 'Profile',
             isSelected: menu == 3,
             onClick: () {
-              if(ctrl.user != null){
+              if(ctrl.user?.firstname != null){
                 onChanged(3);
               } else {
                 showYesNoDialog(

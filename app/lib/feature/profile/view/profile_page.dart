@@ -38,8 +38,13 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     final ctrl = context.read<ProfileController>();
 
-    String point = ctrl.user?.totalPoint == 'null' ? '0' : '${ctrl.user?.totalPoint}';
-    String img = ctrl.user?.profilePicture == 'null' ? '' : '${ctrl.user?.profilePicture}';
+    String point = '';
+    String img = '';
+    if(ctrl.user != null) {
+      point = ctrl.user?.totalPoint == 'null' ? '0' : '${ctrl.user?.totalPoint}';
+      img = ctrl.user?.profilePicture == 'null' ? '' : '${ctrl.user?.profilePicture}';
+    }
+
 
     return Scaffold(
       backgroundColor: const Color(0xFFF9F6F1),
@@ -66,57 +71,58 @@ class _ProfilePageState extends State<ProfilePage> {
       body: SafeArea(
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: UserGreeting(
-                      userName: ctrl.user?.firstname ?? '',
-                      imageUrl: img,
-                      email: ctrl.user?.email ?? '',
-                      isLargeImage: true,
-                    ),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      nextPage(context, LoyaltyPage());
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 8,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(32),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black12,
-                            blurRadius: 10,
-                            offset: const Offset(0, 4),
-                          ),
-                        ],
-                      ),
-                      child: Row(
-                        children: [
-                          Image.asset(
-                            'asset/icons/ic_point.png',
-                            width: 24,
-                            height: 24,
-                          ),
-                          SizedBox(width: 4),
-                          Text(
-                            '${int.parse(point)}',
-                            style: TextStyle(fontWeight: FontWeight.w600),
-                          ),
-                        ],
+            if(ctrl.user?.firstname != null)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: UserGreeting(
+                        userName: ctrl.user?.firstname ?? '',
+                        imageUrl: img,
+                        email: ctrl.user?.email ?? '',
+                        isLargeImage: true,
                       ),
                     ),
-                  ),
-                ],
+                    InkWell(
+                      onTap: () {
+                        nextPage(context, LoyaltyPage());
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 8,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(32),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black12,
+                              blurRadius: 10,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: Row(
+                          children: [
+                            Image.asset(
+                              'asset/icons/ic_point.png',
+                              width: 24,
+                              height: 24,
+                            ),
+                            SizedBox(width: 4),
+                            Text(
+                              '${int.parse(point)}',
+                              style: TextStyle(fontWeight: FontWeight.w600),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
             const SizedBox(height: 24),
             Expanded(
               child: Container(

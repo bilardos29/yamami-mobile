@@ -17,6 +17,7 @@ class ProfileController extends ChangeNotifier {
     _user = null;
     LocalStorage.setString(LocalStorageKey.token, '');
     LocalStorage.setString(LocalStorageKey.rememberMe, 'false');
+    LocalStorage.setString(LocalStorageKey.user, '');
     onSuccess();
   }
 }

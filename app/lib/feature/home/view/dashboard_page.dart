@@ -65,7 +65,7 @@ class _DashboardPageState extends State<DashboardPage> {
     return ListView(
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -77,34 +77,41 @@ class _DashboardPageState extends State<DashboardPage> {
               ),
               SizedBox(height: 20),
               Consumer<ProfileController>(
-                builder: (context, ProfileCtrl, _) {
-                  String point = ProfileCtrl.user?.totalPoint == 'null' ? '0' : '${ProfileCtrl.user?.totalPoint}';
+                builder: (context, profilCtrl, _) {
+                  if (profilCtrl.user?.firstname != null) {
+                    String point =
+                        profilCtrl.user?.totalPoint == 'null'
+                            ? '0'
+                            : '${profilCtrl.user?.totalPoint}';
 
-                  print('test ${ProfileCtrl.user?.profilePicture}');
-                  return ProfileCtrl.user != null
-                      ? Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: UserGreeting(
-                                  userName: ProfileCtrl.user?.firstname ?? '',
-                                  imageUrl: ProfileCtrl.user?.profilePicture == 'null' ? null : ProfileCtrl.user?.profilePicture,
-                                ),
+                    return Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: UserGreeting(
+                                userName: profilCtrl.user?.firstname ?? '',
+                                imageUrl:
+                                    profilCtrl.user?.profilePicture == 'null'
+                                        ? null
+                                        : profilCtrl.user?.profilePicture,
                               ),
-                              PointBadge(
-                                point: int.parse(point),
-                                onClick: () {
-                                  nextPage(context, LoyaltyPage());
-                                },
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 20),
-                        ],
-                      )
-                      : SizedBox();
+                            ),
+                            PointBadge(
+                              point: int.parse(point),
+                              onClick: () {
+                                nextPage(context, LoyaltyPage());
+                              },
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 20),
+                      ],
+                    );
+                  } else {
+                    return SizedBox();
+                  }
                 },
               ),
               PromoBanner(

@@ -10,7 +10,7 @@ class HomeController extends ChangeNotifier with Api {
 
   Future<UserModel> getUser() async {
     final userData = LocalStorage.getString(LocalStorageKey.user);
-    if(userData.isNotEmpty){
+    if(userData.isNotEmpty) {
       final user = UserModel.fromJson(json.decode(userData));
       return user;
     }
