@@ -8,6 +8,9 @@ import 'package:flutter/material.dart';
 
 class HomeController extends ChangeNotifier with Api {
 
+  bool newNotif = false;
+  bool newCart = false;
+
   Future<UserModel> getUser() async {
     final userData = LocalStorage.getString(LocalStorageKey.user);
     if(userData.isNotEmpty) {

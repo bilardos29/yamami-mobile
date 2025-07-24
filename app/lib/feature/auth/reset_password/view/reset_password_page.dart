@@ -1,8 +1,10 @@
 import 'package:app/component/custom_text_field.dart';
 import 'package:app/component/main_button.dart';
 import 'package:app/feature/auth/login/view/login_page.dart';
+import 'package:app/feature/auth/reset_password/controller/reset_password_controller.dart';
 import 'package:app/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ResetPasswordPage extends StatefulWidget {
   const ResetPasswordPage({super.key});
@@ -17,6 +19,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
 
   @override
   Widget build(BuildContext context) {
+    ResetPasswordController ctrl = context.read<ResetPasswordController>();
     return Scaffold(
       body: SafeArea(
         child: ListView(
@@ -63,7 +66,13 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                   SizedBox(height: 24),
                   SizedBox(height: 30),
                   MainButton(text: 'Simpan', onPressed: () {
-                    backToMainPage(context, LoginPage());
+                    ctrl.resetPassword(_pass.text, _repass.text, onErr: (err){
+                      showAppSnackBar(context, message: err);
+                    }, onSuccess: (val) {
+                      showAppSnackBar(context, message: val);
+                      backToMainPage(context, LoginPage());
+                    });
+
                   }),
                 ],
               ),

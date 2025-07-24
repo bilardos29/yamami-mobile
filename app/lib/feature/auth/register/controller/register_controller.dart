@@ -42,9 +42,7 @@ class RegisterController extends ChangeNotifier with Api {
           password: pwd,
           confirmationPassword: repwd,
         );
-        print('request ${request.toJson()}');
         final result = await post(ApiPath.register, body: request.toJson());
-        print('test ${result.body}');
         final response = Response.fromJson(jsonDecode(result.body));
         if (result.statusCode == 200) {
           print('test ${response.data}');

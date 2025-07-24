@@ -1,6 +1,8 @@
+import 'package:app/feature/auth/forgot_password/controller/forgot_password_controller.dart';
 import 'package:app/feature/auth/login/controller/login_controller.dart';
 import 'package:app/feature/auth/login/view/login_page.dart';
 import 'package:app/feature/auth/register/controller/register_controller.dart';
+import 'package:app/feature/auth/reset_password/controller/reset_password_controller.dart';
 import 'package:app/feature/home/controller/home_controller.dart';
 import 'package:app/feature/home/view/home_page.dart';
 import 'package:app/feature/profile/contoller/profile_controller.dart';
@@ -49,6 +51,12 @@ class _MyAppState extends State<MyApp> {
         ),
         ChangeNotifierProvider(
           create: (context) => HomeController(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ForgotPasswordController(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ResetPasswordController(),
         ),
       ],
       child: MaterialApp(

@@ -1,9 +1,11 @@
 import 'package:app/component/custom_text_field.dart';
 import 'package:app/component/main_button.dart';
+import 'package:app/feature/auth/forgot_password/controller/forgot_password_controller.dart';
 import 'package:app/feature/auth/login/view/login_page.dart';
 import 'package:app/feature/auth/otp/view/otp_reset_page.dart';
 import 'package:app/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({super.key});
@@ -17,6 +19,8 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
 
   @override
   Widget build(BuildContext context) {
+
+    ForgotPasswordController ctrl = context.read<ForgotPasswordController>();
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -49,7 +53,13 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   MainButton(
                     text: 'Kirim',
                     onPressed: () {
-                      nextPage(context, OtpResetPage());
+                      ctrl.forgotPassword(_email.text, onErr: (err) {
+                        showAppSnackBar(context, message: err);
+                      }, onSuccess: (val){
+                        showAppSnackBar(context, message: val);
+                        nextPage(context, OtpResetPage());
+                      });
+
                     },
                   ),
                 ],
