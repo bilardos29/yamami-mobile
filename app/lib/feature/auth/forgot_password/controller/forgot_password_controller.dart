@@ -17,11 +17,9 @@ class ForgotPasswordController extends ChangeNotifier with Api {
       try {
         final request = ForgotPasswordRequest(email: email);
         final result = await post(ApiPath.forgotPassword, body: request.toJson());
-        print('test ${result.body}');
         final response = Response.fromJson(jsonDecode(result.body));
         if (result.statusCode == 200) {
-          print('test ${response.data}');
-          onSuccess!('Berhasil Kirim Permintaan');
+          onSuccess!(response.data['reset_password_token']);
         } else {
           onErr!(response.message ?? '');
         }

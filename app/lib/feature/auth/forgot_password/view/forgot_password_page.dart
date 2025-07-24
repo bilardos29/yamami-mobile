@@ -3,6 +3,7 @@ import 'package:app/component/main_button.dart';
 import 'package:app/feature/auth/forgot_password/controller/forgot_password_controller.dart';
 import 'package:app/feature/auth/login/view/login_page.dart';
 import 'package:app/feature/auth/otp/view/otp_reset_page.dart';
+import 'package:app/feature/auth/reset_password/controller/reset_password_controller.dart';
 import 'package:app/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -56,7 +57,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       ctrl.forgotPassword(_email.text, onErr: (err) {
                         showAppSnackBar(context, message: err);
                       }, onSuccess: (val){
-                        showAppSnackBar(context, message: val);
+                        context.read<ResetPasswordController>().resetToken = val;
                         nextPage(context, OtpResetPage());
                       });
 

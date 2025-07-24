@@ -8,5 +8,5 @@ class ApiPath {
   static const String login = "$_auth/login";
 
   static const String forgotPassword = "$_auth/forgot-password";
-  static const String resetPassword = "$_auth/forgot-password";
+  static const String resetPassword = "$_auth/change-password";
 }

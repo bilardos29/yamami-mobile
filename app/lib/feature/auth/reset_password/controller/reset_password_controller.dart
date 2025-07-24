@@ -6,6 +6,9 @@ import 'package:app/feature/auth/reset_password/model/reset_password_request.dar
 import 'package:flutter/cupertino.dart';
 
 class ResetPasswordController extends ChangeNotifier with Api {
+
+  String? resetToken;
+
   void resetPassword(
     String pwd,
     String repwd, {
@@ -16,28 +19,28 @@ class ResetPasswordController extends ChangeNotifier with Api {
       onErr!('Password tidak boleh kosong');
     } else if (repwd.isEmpty) {
       onErr!('Password Confirmation tidak boleh kosong');
+    } else if (pwd != repwd) {
+      onErr!('Password dan Password Confirmation tidak sesuai');
     } else {
-      onSuccess!('Berhasil Mengubah Password');
-      // try {
-      //   final request = ResetPasswordRequest(
-      //     password: pwd,
-      //     confirmationPassword: repwd,
-      //   );
-      //   final result = await post(
-      //     ApiPath.resetPassword,
-      //     body: request.toJson(),
-      //   );
-      //   print('test ${result.body}');
-      //   final response = Response.fromJson(jsonDecode(result.body));
-      //   if (result.statusCode == 200) {
-      //     print('test ${response.data}');
-      //     onSuccess!('Berhasil Mengubah Password');
-      //   } else {
-      //     onErr!(response.message ?? '');
-      //   }
-      // } catch (e) {
-      //   onErr!(e.toString());
-      // }
+      try {
+        final request = ResetPasswordRequest(
+          resetToken: resetToken,
+          password: pwd,
+          confirmationPassword: repwd,
+        );
+        final result = await put(
+          ApiPath.resetPassword,
+          body: request.toJson(),
+        );
+        final response = Response.fromJson(jsonDecode(result.body));
+        if (result.statusCode == 200) {
+          onSuccess!('Berhasil Mengubah Password');
+        } else {
+          onErr!(response.message ?? '');
+        }
+      } catch (e) {
+        onErr!(e.toString());
+      }
     }
   }
 }
