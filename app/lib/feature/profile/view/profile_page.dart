@@ -54,6 +54,7 @@ class _ProfilePageState extends State<ProfilePage> {
         actions: [
           buildIconWithBadge(
             image: 'ic_notif.png',
+            withRedDot: false,
             onTap: () {
               nextPage(context, NotificationPage());
             },
@@ -61,6 +62,7 @@ class _ProfilePageState extends State<ProfilePage> {
           SizedBox(width: 12),
           buildIconWithBadge(
             image: 'ic_cart.png',
+            withRedDot: false,
             onTap: () {
               nextPage(context, CartPage());
             },

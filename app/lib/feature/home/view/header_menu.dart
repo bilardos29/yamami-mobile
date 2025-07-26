@@ -9,6 +9,8 @@ class HeaderMenu extends StatelessWidget {
   final bool isSearchOnFocus;
   final bool isDashboard;
   final String title;
+  final bool newNotif;
+  final bool newCart;
 
   const HeaderMenu({
     this.onNotificationTap,
@@ -17,6 +19,8 @@ class HeaderMenu extends StatelessWidget {
     this.searchController,
     this.isSearchOnFocus = false,
     this.isDashboard = false,
+    this.newNotif = false,
+    this.newCart = false,
     this.title = '',
     super.key,
   });
@@ -78,11 +82,15 @@ class HeaderMenu extends StatelessWidget {
               const SizedBox(width: 12),
               buildIconWithBadge(
                 image: 'ic_notif.png',
+                withRedDot: newNotif,
                 onTap: onNotificationTap,
               ),
               const SizedBox(width: 12),
-              buildIconWithBadge(image: 'ic_cart.png', onTap: onCartTap),
+              buildIconWithBadge(
+                image: 'ic_cart.png',
+                withRedDot: newNotif,
+                onTap: onCartTap,
+              ),
             ],
           );
-
 }
