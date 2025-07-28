@@ -27,14 +27,7 @@ class UserGreeting extends StatelessWidget {
             borderRadius: BorderRadius.circular(isLargeImage ? 32 : 22),
             color: Color(0xFF999999),
           ),
-          child: CircleAvatar(
-            radius: isLargeImage ? 32 : 22,
-            backgroundColor: Colors.black12,
-            backgroundImage:
-                imageUrl == null || imageUrl!.isEmpty
-                    ? AssetImage('asset/images/user.png')
-                    : NetworkImage(imageUrl!),
-          ),
+          child: buildProfileImage(imageUrl, isLargeImage),
         ),
         const SizedBox(width: 8),
         Expanded(
@@ -69,6 +62,35 @@ class UserGreeting extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+
+  Widget buildProfileImage(String? imageUrl, bool isLargeImage) {
+    final radius = isLargeImage ? 32.0 : 22.0;
+
+    if (imageUrl == null || imageUrl.isEmpty) {
+      return CircleAvatar(
+        radius: radius,
+        backgroundColor: Colors.black12,
+        backgroundImage: AssetImage('asset/images/user.png'),
+      );
+    }
+
+    return ClipOval(
+      child: Image.network(
+        imageUrl,
+        width: radius * 2,
+        height: radius * 2,
+        fit: BoxFit.cover,
+        errorBuilder: (context, error, stackTrace) {
+          return Image.asset(
+            'asset/images/user.png',
+            width: radius * 2,
+            height: radius * 2,
+            fit: BoxFit.cover,
+          );
+        },
+      ),
     );
   }
 }

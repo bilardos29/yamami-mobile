@@ -10,6 +10,8 @@ class ApiPath {
   static const String forgotPassword = "$_auth/forgot-password";
   static const String resetPassword = "$_auth/change-password";
 
+  static const String updateProfile = "me/update-profile";
+
   static const String verifyOtp = "$_auth/verify-otp";
   static const String requestOtp = "$_auth/request-otp";
 

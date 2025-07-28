@@ -45,7 +45,6 @@ class RegisterController extends ChangeNotifier with Api {
         final result = await post(ApiPath.register, body: request.toJson());
         final response = Response.fromJson(jsonDecode(result.body));
         if (result.statusCode == 200) {
-          print('test ${response.data}');
           onSuccess!('Berhasil Daftar');
         } else {
           onErr!(response.message ?? '');

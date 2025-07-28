@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:app/component/main_button.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 backToMainPage(BuildContext ctx, Widget page) {
   Navigator.pushAndRemoveUntil(
@@ -187,4 +190,43 @@ Map<String, String> splitName(String fullName) {
     'firstname': firstname,
     'lastname': lastname,
   };
+}
+
+Future<void> showImagePicker(BuildContext context, ValueChanged<File?> onSuccess) async {
+  showModalBottomSheet(
+    context: context,
+    builder: (_) {
+      return SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          child: Wrap(
+            children: [
+              ListTile(
+                leading: Icon(Icons.photo_camera),
+                title: Text('Ambil dari Kamera'),
+                onTap: () async {
+                  Navigator.pop(context);
+                  final pickedFile = await ImagePicker().pickImage(source: ImageSource.camera);
+                  if (pickedFile != null) {
+                    onSuccess(File(pickedFile.path));
+                  }
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.photo_library),
+                title: Text('Pilih dari Galeri'),
+                onTap: () async {
+                  Navigator.pop(context);
+                  final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+                  if (pickedFile != null) {
+                    onSuccess(File(pickedFile.path));
+                  }
+                },
+              ),
+            ],
+          ),
+        ),
+      );
+    },
+  );
 }

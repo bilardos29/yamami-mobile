@@ -41,7 +41,7 @@ class _ProfilePageState extends State<ProfilePage> {
     String point = '';
     String img = '';
     if(ctrl.user != null) {
-      point = ctrl.user?.totalPoint == 'null' ? '0' : '${ctrl.user?.totalPoint}';
+      point = ctrl.user?.totalPoint == 'null' || ctrl.user?.totalPoint == null ? '0' : '${ctrl.user?.totalPoint}';
       img = ctrl.user?.profilePicture == 'null' ? '' : '${ctrl.user?.profilePicture}';
     }
 

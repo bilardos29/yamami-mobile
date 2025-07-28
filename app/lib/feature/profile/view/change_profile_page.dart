@@ -1,8 +1,10 @@
 import 'package:app/component/custom_text_button.dart';
 import 'package:app/component/main_button.dart';
+import 'package:app/feature/profile/contoller/profile_controller.dart';
 import 'package:app/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class ChangeProfilePage extends StatefulWidget {
   @override
@@ -20,14 +22,31 @@ class _ChangeProfilePageState extends State<ChangeProfilePage> {
   DateTime? selectedDate;
 
   final List<String> genderOptions = ['Laki-laki', 'Perempuan'];
+  late ProfileController ctrl;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    ctrl = context.read<ProfileController>();
+
+    _firstNameController.text = ctrl.user?.firstname ?? '';
+    _lastNameController.text = ctrl.user?.lastname ?? '';
+    _phoneController.text = ctrl.user?.phoneNumber ?? '';
+    if (ctrl.user?.dob != 'null') {
+      _birthDateController.text = ctrl.user?.dob ?? '';
+    }
+    if (ctrl.user?.gender != 'null') {
+      gender = ctrl.user?.gender ?? '';
+    }
+    email = ctrl.user?.email ?? '';
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: appText('Profil'),
-      ),
+      appBar: AppBar(title: appText('Profil')),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
         child: ListView(
@@ -37,13 +56,18 @@ class _ChangeProfilePageState extends State<ChangeProfilePage> {
                 children: [
                   Row(
                     children: [
-                      const CircleAvatar(
+                      CircleAvatar(
                         radius: 36,
                         backgroundColor: Colors.grey,
-                        child: Icon(
-                          Icons.person,
-                          size: 40,
-                          color: Colors.white,
+                        child: Image.network(
+                          ctrl.user?.profilePicture ?? '',
+                          errorBuilder: (context, error, stackTrace) {
+                            return Icon(
+                              Icons.person,
+                              size: 40,
+                              color: Colors.white,
+                            );
+                          },
                         ),
                       ),
                       const SizedBox(width: 12),
@@ -53,7 +77,9 @@ class _ChangeProfilePageState extends State<ChangeProfilePage> {
                         children: [
                           CustomTextButton(
                             text: 'Ubah Foto Profil',
-                            onClick: () {},
+                            onClick: () {
+                              showImagePicker(context, (file) {});
+                            },
                           ),
                           const SizedBox(height: 4),
                           const Text(
@@ -130,6 +156,7 @@ class _ChangeProfilePageState extends State<ChangeProfilePage> {
               ctrl: _phoneController,
               keyboard: TextInputType.phone,
               hint: 'Nomor telepon',
+              isReadOnly: true,
             ),
             const SizedBox(height: 16),
             txtField(
@@ -138,7 +165,25 @@ class _ChangeProfilePageState extends State<ChangeProfilePage> {
               isReadOnly: true,
             ),
             const SizedBox(height: 24),
-            MainButton(text: 'Simpan', onPressed: () {}),
+            MainButton(
+              text: 'Simpan',
+              onPressed: () {
+                String dbApi = DateFormat('yyyy-MM-dd').format(selectedDate!);
+                ctrl.updateUser(
+                  _firstNameController.text,
+                  _lastNameController.text,
+                  gender,
+                  dbApi,
+                  onSuccess: (val) {
+                    showAppSnackBar(context, message: val);
+                    popPage(context);
+                  },
+                  onErr: (err) {
+                    showAppSnackBar(context, message: err);
+                  },
+                );
+              },
+            ),
           ],
         ),
       ),
@@ -156,9 +201,7 @@ class _ChangeProfilePageState extends State<ChangeProfilePage> {
       hintText: hint ?? '',
       filled: isReadOnly,
       fillColor: isReadOnly ? Color(0xFFF0F0F0) : Colors.white,
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
+      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
     ),
     keyboardType: keyboard,
     controller: ctrl,
