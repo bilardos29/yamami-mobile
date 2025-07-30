@@ -8,6 +8,7 @@ import 'package:flutter/cupertino.dart';
 class OTPController extends ChangeNotifier with Api {
 
   String _otpToken = '';
+  bool isLoading = false;
 
   void requestOTP(
       String phone, {
@@ -19,6 +20,7 @@ class OTPController extends ChangeNotifier with Api {
     } else {
       try {
         final request = OTPRequest(phoneNumber: phone);
+
         final result = await post(ApiPath.requestOtp, body: request.toJson());
         final response = Response.fromJson(jsonDecode(result.body));
         if (result.statusCode == 200) {
@@ -45,9 +47,14 @@ class OTPController extends ChangeNotifier with Api {
       onErr!('OTP harus 6 angka');
     } else {
       try {
+        isLoading = true;
+        notifyListeners();
+
         final request = OTPVerify(token:_otpToken, otp: otp);
         final result = await post(ApiPath.verifyOtp, body: request.toJson());
         final response = Response.fromJson(jsonDecode(result.body));
+        isLoading = false;
+        notifyListeners();
         if (result.statusCode == 200) {
           onSuccess!();
         } else {

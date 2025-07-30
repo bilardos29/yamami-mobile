@@ -113,7 +113,10 @@ class _RegisterPageState extends State<RegisterPage> {
                         },
                         onSuccess: (val) {
                           showAppSnackBar(context, message: val);
-                          nextPage(context, OtpPage());
+                          nextPage(
+                            context,
+                            OtpPage(email: _email.text, phone: _notelp.text),
+                          );
                         },
                       );
                     },

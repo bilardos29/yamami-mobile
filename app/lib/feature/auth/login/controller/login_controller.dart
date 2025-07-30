@@ -26,9 +26,11 @@ class LoginController extends ChangeNotifier with Api {
       try {
         final request = LoginRequest(
           type: inputType,
-          email: user,
+          email: inputType == 'email' ? user : null,
+          phoneNumber: inputType != 'email' ? user : null,
           password: pwd,
         );
+
         final result = await post(ApiPath.login, body: request.toJson());
         final response = Response.fromJson(jsonDecode(result.body));
         if (result.statusCode == 200) {
