@@ -13,6 +13,7 @@ import 'package:app/feature/product/data/product_model.dart';
 class HomeController extends ChangeNotifier with Api {
   bool newNotif = false;
   bool newCart = false;
+  bool isLoading = false;
   List<BannerModel> listBanner = [];
   List<ProductCategoryModel> listCategory = [];
   List<ProductModel> listProduct = [];
@@ -26,22 +27,17 @@ class HomeController extends ChangeNotifier with Api {
     return UserModel();
   }
 
-  void getListBanner({
-    ValueChanged<String>? onErr,
-    VoidCallback? onSuccess,
-  }) async {
+  getListBanner() async {
     try {
       final result = await get(ApiPath.promoBanner);
       final response = Response.fromJson(jsonDecode(result.body));
       if (result.statusCode == 200) {
-        final List<dynamic> data = response.data;
-        listBanner = data.map((e) => BannerModel.fromJson(e)).toList();
-        onSuccess!();
-      } else {
-        onErr!(response.message ?? '');
+        final list = ListBannerModel.fromJson(response.data);
+        listBanner.addAll(list.banners ?? []);
+        notifyListeners();
       }
     } catch (e) {
-      onErr!(e.toString());
+      print('err $e');
     }
   }
 
@@ -73,7 +69,8 @@ class HomeController extends ChangeNotifier with Api {
       final response = Response.fromJson(jsonDecode(result.body));
       if (result.statusCode == 200) {
         final List<dynamic> data = response.data;
-        listCategory = data.map((e) => ProductCategoryModel.fromJson(e)).toList();
+        listCategory =
+            data.map((e) => ProductCategoryModel.fromJson(e)).toList();
         onSuccess!();
       } else {
         onErr!(response.message ?? '');
@@ -83,33 +80,23 @@ class HomeController extends ChangeNotifier with Api {
     }
   }
 
-  void getListProduct(
-      String filter,
-      String catId,
-      {
-    ValueChanged<String>? onErr,
-    VoidCallback? onSuccess,
-  }) async {
+  getListProduct() async {
     try {
       final result = await get(ApiPath.product);
       final response = Response.fromJson(jsonDecode(result.body));
       if (result.statusCode == 200) {
         final List<dynamic> data = response.data;
         listProduct = data.map((e) => ProductModel.fromJson(e)).toList();
-        onSuccess!();
-      } else {
-        onErr!(response.message ?? '');
       }
     } catch (e) {
-      onErr!(e.toString());
+      print('err $e');
     }
   }
 
-  void getListPromoCollection(
-      {
-        ValueChanged<String>? onErr,
-        VoidCallback? onSuccess,
-      }) async {
+  void getListPromoCollection({
+    ValueChanged<String>? onErr,
+    VoidCallback? onSuccess,
+  }) async {
     try {
       final result = await get(ApiPath.promoCollection);
       final response = Response.fromJson(jsonDecode(result.body));

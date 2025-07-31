@@ -2,7 +2,7 @@ class Response {
   bool? success;
   int? code;
   String? message;
-  dynamic? data;
+  dynamic data;
 
   Response({this.success, this.code, this.message, this.data});
 

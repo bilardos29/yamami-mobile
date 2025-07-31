@@ -5,6 +5,7 @@ import 'package:app/component/point_badge.dart';
 import 'package:app/component/product_card.dart';
 import 'package:app/component/promo_discount_card.dart';
 import 'package:app/component/user_greeting.dart';
+import 'package:app/feature/banner/controller/banner_controller.dart';
 import 'package:app/feature/banner/view/banner_detail_page.dart';
 import 'package:app/feature/banner/view/list_banner_page.dart';
 import 'package:app/feature/cart/view/cart_page.dart';
@@ -38,170 +39,198 @@ class _DashboardPageState extends State<DashboardPage> {
     'Terakhir Dilihat',
   ];
 
-  final List<String> images = [
-    'banner_1.png',
-    'banner_2.png',
-    'banner_3.png',
-    'banner_4.png',
-  ];
-
   void initState() {
     super.initState();
-    fetchUser();
+
+    fetchData();
   }
 
-  void fetchUser() async {
-    final ctrl = context.read<ProfileController>();
+  void fetchData() async {
+    final profCtrl = context.read<ProfileController>();
     final homeCtrl = context.read<HomeController>();
 
     final user = await homeCtrl.getUser();
     setState(() {
-      ctrl.user = user;
+      profCtrl.user = user;
     });
+    await homeCtrl.getListBanner();
+    await homeCtrl.getListProduct();
   }
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              HeaderMenu(
-                isDashboard: true,
-                onNotificationTap: () => nextPage(context, NotificationPage()),
-                onCartTap: () => nextPage(context, CartPage()),
-                onSearch: () => nextPage(context, SearchPage()),
-              ),
-              SizedBox(height: 20),
-              Consumer<ProfileController>(
-                builder: (context, profilCtrl, _) {
-                  if (profilCtrl.user?.firstname != null) {
-                    String point =
-                        profilCtrl.user?.totalPoint == 'null'
-                            ? '0'
-                            : '${profilCtrl.user?.totalPoint}';
+    return Consumer<HomeController>(
+      builder: (context, ctrl, _) {
+        return Stack(
+          children: [
+            ListView(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      HeaderMenu(
+                        isDashboard: true,
+                        onNotificationTap:
+                            () => nextPage(context, NotificationPage()),
+                        onCartTap: () => nextPage(context, CartPage()),
+                        onSearch: () => nextPage(context, SearchPage()),
+                      ),
+                      SizedBox(height: 20),
+                      Consumer<ProfileController>(
+                        builder: (context, profilCtrl, _) {
+                          if (profilCtrl.user?.firstname != null) {
+                            String point =
+                                profilCtrl.user?.totalPoint == 'null'
+                                    ? '0'
+                                    : '${profilCtrl.user?.totalPoint}';
 
-                    return Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: UserGreeting(
-                                userName: profilCtrl.user?.firstname ?? '',
-                                imageUrl:
-                                    profilCtrl.user?.profilePicture == 'null'
-                                        ? null
-                                        : profilCtrl.user?.profilePicture,
-                              ),
-                            ),
-                            PointBadge(
-                              point: int.parse(point),
-                              onClick: () {
-                                nextPage(context, LoyaltyPage());
-                              },
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 20),
-                      ],
-                    );
-                  } else {
-                    return SizedBox();
-                  }
-                },
-              ),
-              PromoBanner(
-                images: images,
-                currentIndex: 2,
-                totalBanner: 4,
-                onClick: () {
-                  nextPage(context, BannerDetailPage(image: images[2]));
-                },
-                onSeeAll: () {
-                  nextPage(context, ListBannerPage(images: images));
-                },
-              ),
-              SizedBox(height: 20),
-              MenuView(),
-              SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  PromoDiscountCard(
-                    title: 'Mei Diskon',
-                    discountLabel: '50%',
-                    products: [
-                      Product(
-                        imageUrl: 'img_1.png',
-                        originalPrice: 'Ro. 100.000',
-                        discountedPrice: 'Ro. 50.000',
-                      ),
-                      Product(
-                        imageUrl: 'img_2.png',
-                        originalPrice: 'Ro. 100.000',
-                        discountedPrice: 'Ro. 50.000',
-                      ),
-                    ],
-                  ),
-                  PromoDiscountCard(
-                    bgColor: Colors.white,
-                    title: 'Alat Kue',
-                    discountLabel: '50%',
-                    products: [
-                      Product(
-                        imageUrl: 'img_3.png',
-                        originalPrice: 'Ro. 100.000',
-                        discountedPrice: 'Ro. 70.000',
-                      ),
-                      Product(
-                        imageUrl: 'img_4.png',
-                        originalPrice: 'Ro. 100.000',
-                        discountedPrice: 'Ro. 70.000',
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              SizedBox(height: 20),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: List.generate(options.length, (index) {
-                    return Padding(
-                      padding: const EdgeInsets.only(right: 8),
-                      child: CustomBorderButton(
-                        label: options[index],
-                        isSelected: selectedIndex == index,
-                        onPressed: () {
-                          setState(() => selectedIndex = index);
+                            return Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
+                                      child: UserGreeting(
+                                        userName:
+                                            profilCtrl.user?.firstname ?? '',
+                                        imageUrl:
+                                            profilCtrl.user?.profilePicture ==
+                                                    'null'
+                                                ? null
+                                                : profilCtrl
+                                                    .user
+                                                    ?.profilePicture,
+                                      ),
+                                    ),
+                                    PointBadge(
+                                      point: int.parse(point),
+                                      onClick: () {
+                                        nextPage(context, LoyaltyPage());
+                                      },
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 20),
+                              ],
+                            );
+                          } else {
+                            return SizedBox();
+                          }
                         },
                       ),
-                    );
-                  }),
+                      Visibility(
+                        visible: ctrl.listBanner.isNotEmpty,
+                        child: PromoBanner(
+                          banner: ctrl.listBanner,
+                          onClick: (val) {
+                            print('id $val');
+                            context.read<BannerController>().getBannerDetail(
+                              val,
+                            );
+
+                            nextPage(context, BannerDetailPage(bannerId: val));
+                          },
+                          onSeeAll: () {
+                            nextPage(
+                              context,
+                              ListBannerPage(banner: ctrl.listBanner),
+                            );
+                          },
+                        ),
+                      ),
+                      SizedBox(height: 20),
+                      MenuView(),
+                      SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          PromoDiscountCard(
+                            title: 'Mei Diskon',
+                            discountLabel: '50%',
+                            products: [
+                              Product(
+                                imageUrl: 'img_1.png',
+                                originalPrice: 'Ro. 100.000',
+                                discountedPrice: 'Ro. 50.000',
+                              ),
+                              Product(
+                                imageUrl: 'img_2.png',
+                                originalPrice: 'Ro. 100.000',
+                                discountedPrice: 'Ro. 50.000',
+                              ),
+                            ],
+                          ),
+                          PromoDiscountCard(
+                            bgColor: Colors.white,
+                            title: 'Alat Kue',
+                            discountLabel: '50%',
+                            products: [
+                              Product(
+                                imageUrl: 'img_3.png',
+                                originalPrice: 'Ro. 100.000',
+                                discountedPrice: 'Ro. 70.000',
+                              ),
+                              Product(
+                                imageUrl: 'img_4.png',
+                                originalPrice: 'Ro. 100.000',
+                                discountedPrice: 'Ro. 70.000',
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 20),
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: List.generate(options.length, (index) {
+                            return Padding(
+                              padding: const EdgeInsets.only(right: 8),
+                              child: CustomBorderButton(
+                                label: options[index],
+                                isSelected: selectedIndex == index,
+                                onPressed: () {
+                                  setState(() => selectedIndex = index);
+                                },
+                              ),
+                            );
+                          }),
+                        ),
+                      ),
+                      SizedBox(height: 20),
+                      StaggeredGrid.count(
+                        crossAxisCount: 2,
+                        mainAxisSpacing: 16,
+                        crossAxisSpacing: 16,
+                        children:
+                            products.map((product) {
+                              return ProductCard(
+                                product: product,
+                                onClick:
+                                    () =>
+                                        nextPage(context, DetailProductPage()),
+                              );
+                            }).toList(),
+                      ),
+                      SizedBox(height: 100),
+                    ],
+                  ),
                 ),
-              ),
-              SizedBox(height: 20),
-              StaggeredGrid.count(
-                crossAxisCount: 2,
-                mainAxisSpacing: 16,
-                crossAxisSpacing: 16,
-                children:
-                    products.map((product) {
-                      return ProductCard(
-                        product: product,
-                        onClick: () => nextPage(context, DetailProductPage()),
-                      );
-                    }).toList(),
-              ),
-              SizedBox(height: 100),
-            ],
-          ),
-        ),
-      ],
+              ],
+            ),
+            Visibility(
+              visible: ctrl.isLoading,
+              child: Center(child: CircularProgressIndicator()),
+            ),
+          ],
+        );
+      },
     );
   }
 }

@@ -1,78 +1,126 @@
-import 'package:app/component/main_button.dart';
+import 'dart:async';
+
+import 'package:app/component/custom_image_network.dart';
+import 'package:app/feature/home/model/banner_model.dart';
 import 'package:flutter/material.dart';
 
-class PromoBanner extends StatelessWidget {
-  final List<String> images;
-  final int currentIndex;
-  final int totalBanner;
-  final VoidCallback onClick;
+class PromoBanner extends StatefulWidget {
+  final List<BannerModel> banner;
   final VoidCallback onSeeAll;
+  final ValueChanged<String> onClick;
 
   const PromoBanner({
-    super.key,
-    required this.images,
-    this.currentIndex = 0,
-    this.totalBanner = 4,
-    required this.onClick,
+    required this.banner,
     required this.onSeeAll,
+    required this.onClick,
+    super.key,
   });
 
   @override
+  State<PromoBanner> createState() => _PromoBannerState();
+}
+
+class _PromoBannerState extends State<PromoBanner> {
+  late final PageController _pageController;
+  int _currentIndex = 0;
+  Timer? _autoSwipeTimer;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController();
+    _startAutoSwipe();
+  }
+
+  void _startAutoSwipe() {
+    _autoSwipeTimer?.cancel();
+    _autoSwipeTimer = Timer.periodic(const Duration(seconds: 5), (timer) {
+      if (_pageController.hasClients) {
+        final nextIndex = (_currentIndex + 1) % widget.banner.length;
+        _pageController.animateToPage(
+          nextIndex,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
+        );
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onClick,
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        height: 145,
-        decoration: BoxDecoration(
-          color: const Color(0xFFFFD84F),
-          borderRadius: BorderRadius.circular(16),
-          image: DecorationImage(
-            image: AssetImage('asset/banner/${images[currentIndex]}'),
-            alignment: Alignment.centerRight,
-            fit: BoxFit.cover,
+    final totalBanner = widget.banner.length;
+
+    return SizedBox(
+      height: 200,
+      child: Stack(
+        children: [
+          PageView.builder(
+            controller: _pageController,
+            itemCount: totalBanner,
+            onPageChanged: (index) {
+              setState(() => _currentIndex = index);
+            },
+            itemBuilder: (context, index) {
+              final item = widget.banner[index];
+              return InkWell(
+                onTap: () {
+                  widget.onClick(widget.banner[index].id ?? '');
+                },
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: CustomImageNetwork(item.image ?? ''),
+                ),
+              );
+            },
           ),
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Wrap(
-              crossAxisAlignment: WrapCrossAlignment.end,
-              alignment: WrapAlignment.start,
-              spacing: 4,
-              children: List.generate(totalBanner, (index) {
-                final isActive = index == currentIndex;
-                return Container(
-                  width: isActive ? 20 : 6,
-                  height: 6,
-                  decoration: BoxDecoration(
-                    color: isActive ? Colors.white : Colors.white60,
-                    borderRadius: BorderRadius.circular(3),
-                  ),
-                );
-              }),
-            ),
-            Spacer(),
-            InkWell(
-              onTap: onSeeAll,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Color(0xffB4870F),
-                  borderRadius: BorderRadius.circular(12)
+          Positioned(
+            bottom: 12,
+            left: 16,
+            right: 16,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Wrap(
+                  spacing: 4,
+                  children: List.generate(totalBanner, (index) {
+                    final isActive = index == _currentIndex;
+                    return AnimatedContainer(
+                      duration: const Duration(milliseconds: 300),
+                      width: isActive ? 20 : 6,
+                      height: 6,
+                      decoration: BoxDecoration(
+                        color: isActive ? Colors.white : Colors.white60,
+                        borderRadius: BorderRadius.circular(3),
+                      ),
+                    );
+                  }),
                 ),
-                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-                child: Text(
-                  'Lihat Semua',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
+                const Spacer(),
+                InkWell(
+                  onTap: widget.onSeeAll,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: const Color(0xffB4870F),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 8,
+                      horizontal: 12,
+                    ),
+                    child: const Text(
+                      'Lihat Semua',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ),
-              ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

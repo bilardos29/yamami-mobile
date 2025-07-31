@@ -1,6 +1,32 @@
+import 'package:app/config/meta.dart';
+import 'package:app/feature/product/data/store_model.dart';
+
+class ListBannerModel {
+  List<BannerModel>? banners;
+  MetaModel? meta;
+
+  ListBannerModel({this.banners, this.meta});
+
+  ListBannerModel.fromJson(Map<String, dynamic> json) {
+    banners = <BannerModel>[];
+    if (json['items'] != null) {
+      json['items'].forEach((v) {
+        banners?.add(BannerModel.fromJson(v));
+      });
+    }
+    meta = MetaModel.fromJson(json['meta']);
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['items'] = banners;
+    data['meta'] = meta?.toJson();
+    return data;
+  }
+}
+
 class BannerModel {
-  int? id;
-  int? storeId;
+  String? id;
   String? name;
   String? slug;
   String? image;
@@ -10,33 +36,34 @@ class BannerModel {
   String? endDate;
   String? description;
   String? tnc;
+  ShortStoreModel? store;
   String? notificationTitle;
   String? notificationBody;
   bool? sendNotifNow;
   String? notificationSendAt;
   bool? isPublish;
 
-  BannerModel(
-      {this.id,
-        this.storeId,
-        this.name,
-        this.slug,
-        this.image,
-        this.voucherId,
-        this.voucherCode,
-        this.startDate,
-        this.endDate,
-        this.description,
-        this.tnc,
-        this.notificationTitle,
-        this.notificationBody,
-        this.sendNotifNow,
-        this.notificationSendAt,
-        this.isPublish});
+  BannerModel({
+    this.id,
+    this.name,
+    this.slug,
+    this.image,
+    this.voucherId,
+    this.voucherCode,
+    this.startDate,
+    this.endDate,
+    this.description,
+    this.tnc,
+    this.store,
+    this.notificationTitle,
+    this.notificationBody,
+    this.sendNotifNow,
+    this.notificationSendAt,
+    this.isPublish,
+  });
 
   BannerModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    storeId = json['store_id'];
     name = json['name'];
     slug = json['slug'];
     image = json['image'];
@@ -51,12 +78,12 @@ class BannerModel {
     sendNotifNow = json['send_notif_now'];
     notificationSendAt = json['notification_send_at'];
     isPublish = json['is_publish'];
+    store = json['store'] != null ? ShortStoreModel.fromJson(json['store']) : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
-    data['store_id'] = storeId;
     data['name'] = name;
     data['slug'] = slug;
     data['image'] = image;
@@ -66,6 +93,7 @@ class BannerModel {
     data['end_date'] = endDate;
     data['description'] = description;
     data['tnc'] = tnc;
+    data['store'] = store;
     data['notification_title'] = notificationTitle;
     data['notification_body'] = notificationBody;
     data['send_notif_now'] = sendNotifNow;

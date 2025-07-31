@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:app/component/main_button.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 
 backToMainPage(BuildContext ctx, Widget page) {
   Navigator.pushAndRemoveUntil(
@@ -48,7 +49,8 @@ showAppSnackBar(
   ScaffoldMessenger.of(context).showSnackBar(snackBar);
 }
 
-Future<void> showYesNoDialog(BuildContext context, {
+Future<void> showYesNoDialog(
+  BuildContext context, {
   required String title,
   required String message,
   required VoidCallback onYes,
@@ -56,29 +58,29 @@ Future<void> showYesNoDialog(BuildContext context, {
 }) async {
   return showDialog(
     context: context,
-    builder: (context) => AlertDialog(
-      title: Text(title),
-      content: Text(message),
-      actions: [
-        TextButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-            if (onNo != null) onNo();
-          },
-          child: const Text('Tidak'),
+    builder:
+        (context) => AlertDialog(
+          title: Text(title),
+          content: Text(message),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                if (onNo != null) onNo();
+              },
+              child: const Text('Tidak'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                onYes();
+              },
+              child: const Text('Iya'),
+            ),
+          ],
         ),
-        ElevatedButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-            onYes();
-          },
-          child: const Text('Iya'),
-        ),
-      ],
-    ),
   );
 }
-
 
 Widget emptyState(
   VoidCallback onMulaiBelanja, {
@@ -186,13 +188,13 @@ Map<String, String> splitName(String fullName) {
   final firstname = parts.first;
   final lastname = parts.sublist(1).join(' ');
 
-  return {
-    'firstname': firstname,
-    'lastname': lastname,
-  };
+  return {'firstname': firstname, 'lastname': lastname};
 }
 
-Future<void> showImagePicker(BuildContext context, ValueChanged<File?> onSuccess) async {
+Future<void> showImagePicker(
+  BuildContext context,
+  ValueChanged<File?> onSuccess,
+) async {
   showModalBottomSheet(
     context: context,
     builder: (_) {
@@ -206,7 +208,9 @@ Future<void> showImagePicker(BuildContext context, ValueChanged<File?> onSuccess
                 title: Text('Ambil dari Kamera'),
                 onTap: () async {
                   Navigator.pop(context);
-                  final pickedFile = await ImagePicker().pickImage(source: ImageSource.camera);
+                  final pickedFile = await ImagePicker().pickImage(
+                    source: ImageSource.camera,
+                  );
                   if (pickedFile != null) {
                     onSuccess(File(pickedFile.path));
                   }
@@ -217,7 +221,9 @@ Future<void> showImagePicker(BuildContext context, ValueChanged<File?> onSuccess
                 title: Text('Pilih dari Galeri'),
                 onTap: () async {
                   Navigator.pop(context);
-                  final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+                  final pickedFile = await ImagePicker().pickImage(
+                    source: ImageSource.gallery,
+                  );
                   if (pickedFile != null) {
                     onSuccess(File(pickedFile.path));
                   }
@@ -229,4 +235,15 @@ Future<void> showImagePicker(BuildContext context, ValueChanged<File?> onSuccess
       );
     },
   );
+}
+
+String convertDate(String dt) {
+  // Parsing ISO8601 string ke DateTime
+  DateTime pickedDate = DateTime.parse(dt);
+
+  // Format ke "dd MMMM yyyy"
+  String formattedDate = DateFormat('dd MMMM yyyy', 'id_ID').format(pickedDate);
+
+  print(formattedDate);
+  return formattedDate;
 }
